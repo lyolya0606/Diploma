@@ -25,6 +25,8 @@ namespace Diploma {
     /// Interaction logic for UserWindow.xaml
     /// </summary>
     public partial class UserWindow : Window {
+        DatabaseWork _databaseWork;
+        bool isFirstEnter;
         private const int COUNT_OF_ELEMENTS = 23;
         private const int COUNT_OF_REACTIONS = 21;
         private List<List<double>> _concentrations = new();
@@ -50,10 +52,11 @@ namespace Diploma {
 
         public UserWindow() {
             InitializeComponent();
-            FillTable();
-            concChart.AxisX.Clear();
-            concChart.AxisY.Clear();
-            GetValues();
+            //FillTable();
+            //concChart.AxisX.Clear();
+            //concChart.AxisY.Clear();
+            //GetValues();
+            FirstEntering();
         }
 
         private void GetValues() {
@@ -298,6 +301,97 @@ namespace Diploma {
             //};
 
 
+        }
+
+
+
+       
+
+        private void FirstEntering() {
+            isFirstEnter = true;
+            _databaseWork = new DatabaseWork();
+            List<string> marks = _databaseWork.GetMarks();
+
+            foreach (string mark in marks) {
+                marks_ComboBox.Items.Add(mark);
+            }
+
+            marks_ComboBox.SelectedItem = marks[0];
+
+            string name = _databaseWork.GetNameFreon(marks[0]);
+            name_label.Content = name;
+
+            string area = _databaseWork.GetArea(marks[0]);
+            area_label.Text = area;
+
+            string scheme = _databaseWork.GetSchemeFreon(marks[0]);
+            scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
+
+            List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(marks[0]);
+            FillTableEquip(equipment);
+        }
+
+        private void SetUpColumnsEquip() {
+            var column = new DataGridTextColumn {
+                Header = "Обозначение",
+                Binding = new Binding("Designation")
+            };
+            designation_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Оборудование",
+                Binding = new Binding("Equipment")
+            };
+            designation_DataGrid.Columns.Add(column);
+        }
+
+        private record DataForTableEquip {
+            public required string Designation { get; set; }
+            public required string Equipment { get; set; }
+        }
+        //bool isFirstEnter;
+        private void marks_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (isFirstEnter) {
+                isFirstEnter = false;
+                return;
+            }
+            //designation_DataGrid.Items.Clear();
+            designation_DataGrid.ItemsSource = null;
+            designation_DataGrid.Columns.Clear();
+            //designation_DataGrid.Items.Refresh();
+
+            string mark = (string)marks_ComboBox.SelectedItem;
+
+            string name = _databaseWork.GetNameFreon(mark);
+            name_label.Content = name;
+
+            string area = _databaseWork.GetArea(mark);
+            area_label.Text = area;
+
+            string scheme = _databaseWork.GetSchemeFreon(mark);
+            scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
+//            BitmapImage b = new BitmapImage(new Uri(scheme, UriKind.Relative));
+
+//            int newWidth = 100;// новая ширина
+//            int newHeight = 100; // новая высота
+
+//TransformedBitmap resizedImage = new TransformedBitmap(b, new ScaleTransform(newWidth / b.PixelWidth, newHeight / b.PixelHeight));
+//            scheme_image.Source = resizedImage;
+
+            List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(mark);
+            FillTableEquip(equipment);
+        }
+
+        private void FillTableEquip(List<Tuple<string, string>> designations) {
+            SetUpColumnsEquip();
+            List<DataForTableEquip> data = new();
+            for (int i = 0; i < designations.Count; i++) {
+                data.Add(new DataForTableEquip {
+                    Designation = designations[i].Item2,
+                    Equipment = designations[i].Item1
+                });
+            }
+
+            designation_DataGrid.ItemsSource = data;
         }
     }
 }

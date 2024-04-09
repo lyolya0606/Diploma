@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="schemes\scheme_freon125.png" />
+    <None Remove="schemes\scheme_freon134a.png" />
+    <None Remove="schemes\scheme_freon227ea.png" />
+    <None Remove="schemes\scheme_freon23.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="JsonConverter.Newtonsoft.Json" Version="0.5.0" />
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
@@ -18,6 +25,13 @@
     <PackageReference Include="SQLite" Version="3.13.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="schemes\scheme_freon125.png" />
+    <Resource Include="schemes\scheme_freon134a.png" />
+    <Resource Include="schemes\scheme_freon227ea.png" />
+    <Resource Include="schemes\scheme_freon23.png" />
   </ItemGroup>
 
 </Project>

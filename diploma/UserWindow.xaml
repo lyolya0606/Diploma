@@ -10,48 +10,111 @@
         Title="Расчет концентраций" Height="750" Width="1500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+    <Grid>
+        <TabControl>
+            <TabItem x:Name="eqiupmentTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Black" />
+                        <TextBlock Margin="3">Выбор оборудования</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
 
-    <StackPanel Orientation="Horizontal"  Margin="10, 10, 10, 5">
-        <StackPanel Width="54" HorizontalAlignment="Left">
+                <TabItem.Content>
+                    <StackPanel Orientation="Vertical">
+                        <!--<StackPanel Width="53" HorizontalAlignment="Left">
+                            <Button Content="Выйти" Height="27" Width="53" Background="White" BorderBrush="White" Click="Button_Click" FontWeight="Bold"/>
+                        </StackPanel>-->
+
+                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0" Width="277">
+                            <Label Content="Марка:" FontSize="14" FontWeight="Bold"/>
+                            <ComboBox x:Name="marks_ComboBox" Margin="20,0,0,0" VerticalAlignment="Center" Width="181" Height="30" VerticalContentAlignment="Center" FontSize="14" Background="White" BorderBrush="#FF030000" HorizontalAlignment="Center" SelectionChanged="marks_ComboBox_SelectionChanged"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10, 10, 0, 0" Width="401" HorizontalAlignment="Left">
+                            <Label Content="Наименование:" FontSize="14" Width="122" FontWeight="Bold"/>
+                            <Label x:Name="name_label" FontSize="14" Margin="10, 0, 0, 0" Width="274"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10, 10, 10, 0">
+                            <Label Content="Область применения:" FontSize="14" Width="167" FontWeight="Bold"/>
+                            <TextBlock Name="area_label" FontSize="14" TextWrapping="Wrap" Margin="10, 0, 0, 0" Width="802" Height="43" VerticalAlignment="Center"/>
+                            <!--<Label x:Name="area_label" FontSize="13" Margin="10, 0, 0, 0" Width="auto" Height="auto" VerticalContentAlignment="Center"/>-->
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical" Margin="10, 5, 10, 0">
+                            <Label Content="Технологическая схема" FontSize="14" Width="182" FontWeight="Bold"/>
+                            <Image x:Name="scheme_image" Width="1200" Height="380" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10, 10, 10, 20">
+                            <StackPanel.ScrollOwner>
+                                <ScrollViewer/>
+                            </StackPanel.ScrollOwner>
+                            <Label Content="Обозначения:" FontSize="14" Width="113" FontWeight="Bold"/>
+                            <DataGrid x:Name="designation_DataGrid" Height="130" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+
+            <!--<StackPanel Orientation="Horizontal"  Margin="10, 10, 10, 5">-->
+            <!--<StackPanel Width="54" HorizontalAlignment="Left">
             <Button x:Name="back_Button"  FontWeight="Bold" Content="Выйти" Background="White" BorderBrush="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="back_ButtonClick"/>
-        </StackPanel>
+        </StackPanel>-->
 
-        <StackPanel Orientation="Vertical" Margin="-30, 10, 10, 0" Width="338">
-            <Button Margin="0, 10, 0, 0" x:Name="calculateButton" Background="#FFC5FCDE" HorizontalAlignment="Center" FontSize="14" Height="32" Width="87" FontWeight="Bold" Content="Рассчитать" VerticalAlignment="Center" Click="calculateButton_Click"/>
-            <ProgressBar x:Name="progressBar" Height="10" Width="87" Background="White" Margin="0, 2, 0, 0"/>
-            
-            <StackPanel Margin="0, 10, 0, 0">
-                <DataGrid x:Name="concDataGrid" Height="555" Width="332" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=23}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White" FontSize="14"/>
-            </StackPanel>
+            <TabItem x:Name="mathTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Black" />
+                        <TextBlock Margin="3">Поверочный расчет</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
 
-            <StackPanel Margin="0, 10, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Температура, °C"  Height="33" Width="132" HorizontalAlignment="Left"/>
-                <TextBox x:Name="temperatureTextBox" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" FontSize="14" Width="100" Height="33" Margin="10, 0, 0, 0" BorderBrush="Black" Text="400" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </StackPanel>
-        </StackPanel>
+                <TabItem.Content>
+                    <StackPanel Orientation="Horizontal"  Margin="50, 10, 10, 5">
+                        <StackPanel Orientation="Vertical" Margin="-30, 10, 10, 0" Width="338">
+                            <Button Margin="0, 10, 0, 0" x:Name="calculateButton" Background="#FFC5FCDE" HorizontalAlignment="Center" FontSize="14" Height="32" Width="87" FontWeight="Bold" Content="Рассчитать" VerticalAlignment="Center" Click="calculateButton_Click"/>
+                            <ProgressBar x:Name="progressBar" Height="10" Width="87" Background="White" Margin="0, 2, 0, 0"/>
 
-        <StackPanel Orientation="Vertical" Margin="10, 10, 10, 0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Margin="0, 10, 0, 0" x:Name="chooseButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Выбрать вещество" Click="chooseButtonClick"/>
-                <Button Margin="100, 10, 0, 0" x:Name="showTableButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Показать таблицу" Click="showTableButton_Click" IsEnabled="False"/>
-            </StackPanel>
+                            <StackPanel Margin="0, 10, 0, 0">
+                                <DataGrid x:Name="concDataGrid" Height="555" Width="332" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=23}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White" FontSize="14"/>
+                            </StackPanel>
 
-            <StackPanel Margin="40, 22, 30, 0">
-                <wpf:CartesianChart Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1047"/>
-            </StackPanel>
+                            <StackPanel Margin="0, 10, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Температура, °C"  Height="33" Width="132" HorizontalAlignment="Left"/>
+                                <TextBox x:Name="temperatureTextBox" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" FontSize="14" Width="100" Height="33" Margin="10, 0, 0, 0" BorderBrush="Black" Text="400" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
 
-            <StackPanel Margin="0, 10, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Время контакта, с" Height="33" Width="140" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox x:Name="timeTextBox" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" Height="33" FontSize="14" Width="100" Margin="10, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="Black" Text="10" TextAlignment="Center"/>
-                </StackPanel>
-                
-                <StackPanel Margin="100, 0, 0, 0" Orientation="Horizontal">
-                    <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Конечная концентрация хладона 134а, моль/л: " Height="33" Width="340" HorizontalAlignment="Center" VerticalAlignment="Center"/> 
-                    <Label x:Name="finishConcLabel" FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="-" Height="33" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center"/> 
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="10, 10, 10, 0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Margin="0, 10, 0, 0" x:Name="chooseButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Выбрать вещество" Click="chooseButtonClick"/>
+                                <Button Margin="100, 10, 0, 0" x:Name="showTableButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Показать таблицу" Click="showTableButton_Click" IsEnabled="False"/>
+                            </StackPanel>
 
-    </StackPanel>
+                            <StackPanel Margin="40, 22, 30, 0">
+                                <wpf:CartesianChart Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1047"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0, 10, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Время контакта, с" Height="33" Width="140" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBox x:Name="timeTextBox" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" Height="33" FontSize="14" Width="100" Margin="10, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="Black" Text="10" TextAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="100, 0, 0, 0" Orientation="Horizontal">
+                                    <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Конечная концентрация хладона 134а, моль/л: " Height="33" Width="340" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Label x:Name="finishConcLabel" FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="-" Height="33" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem.Content>
+                <!--</StackPanel>-->
+            </TabItem>
+
+        </TabControl>
+    </Grid>
 </Window>
