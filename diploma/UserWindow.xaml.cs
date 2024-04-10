@@ -327,8 +327,27 @@ namespace Diploma {
             string scheme = _databaseWork.GetSchemeFreon(marks[0]);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
 
-            List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(marks[0]);
-            FillTableEquip(equipment);
+
+
+
+            //List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(marks[0]);
+            //FillTableEquip(equipment);
+            Dictionary<string, string> equipmentFull = new();
+
+            List<Tuple<string, string>> equipmentStage = [];
+            List<int> sequenceStage = _databaseWork.GetSequenceStages(marks[0]);
+            foreach (int i in  sequenceStage) {
+                equipmentStage.Add(new Tuple<string, string>(_databaseWork.GetStage(i), _databaseWork.GetStageEquipment(i)));
+                Dictionary<string, string> equipmentNotFull = _databaseWork.GetEquipment(i);
+                foreach (string key in equipmentNotFull.Keys) {
+                    if (!equipmentFull.ContainsKey(key)) {
+                        equipmentFull.Add(key, equipmentNotFull[key]);
+                    }
+                }
+            }
+            FillTableStage(equipmentStage);
+            FillTableEquip(equipmentFull);
+
         }
 
         private void SetUpColumnsEquip() {
@@ -348,6 +367,43 @@ namespace Diploma {
             public required string Designation { get; set; }
             public required string Equipment { get; set; }
         }
+
+        private void SetUpColumnsStage() {
+            var column = new DataGridTextColumn {
+                Header = "Стадия",
+                Binding = new Binding("Stage")
+            };
+            stage_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Оборудование для стадии",
+                Binding = new Binding("Equipment")
+            };
+            stage_DataGrid.Columns.Add(column);
+        }
+
+        private record DataForTableStage {
+            public required string Stage { get; set; }
+            public required string Equipment { get; set; }
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            TabControl tabControl = (TabControl)sender;
+            int selectedIndex = tabControl.SelectedIndex;
+
+            if (selectedIndex == 0) {
+                //FirstEntering();
+            } else if (selectedIndex == 1 && _isFirstEnterMath) {
+                _isFirstEnterMath = false;
+                FillTable();
+                concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 15 });
+                concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0 });
+                //concChart.AxisX.Clear();
+                //concChart.AxisY.Clear();
+                concChart.DataContext = this;
+                GetValues();
+            }
+        }
+        bool _isFirstEnterMath = true;
         //bool isFirstEnter;
         private void marks_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (isFirstEnter) {
@@ -369,13 +425,6 @@ namespace Diploma {
 
             string scheme = _databaseWork.GetSchemeFreon(mark);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
-//            BitmapImage b = new BitmapImage(new Uri(scheme, UriKind.Relative));
-
-//            int newWidth = 100;// новая ширина
-//            int newHeight = 100; // новая высота
-
-//TransformedBitmap resizedImage = new TransformedBitmap(b, new ScaleTransform(newWidth / b.PixelWidth, newHeight / b.PixelHeight));
-//            scheme_image.Source = resizedImage;
 
             List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(mark);
             FillTableEquip(equipment);
@@ -393,5 +442,33 @@ namespace Diploma {
 
             designation_DataGrid.ItemsSource = data;
         }
+
+        private void FillTableEquip(Dictionary<string, string> designations) {
+            SetUpColumnsEquip();
+            List<DataForTableEquip> data = new();
+            foreach (string key in designations.Keys) {
+                data.Add(new DataForTableEquip {
+                    Designation = key,
+                    Equipment = designations[key],
+                });
+            }
+
+            designation_DataGrid.ItemsSource = data;
+        }
+
+        private void FillTableStage(List<Tuple<string, string>> equipmentStage) {
+            SetUpColumnsStage();
+            List<DataForTableStage> data = new();
+            for (int i = 0; i < equipmentStage.Count; i++) {
+                data.Add(new DataForTableStage {
+                    Stage = equipmentStage[i].Item1,
+                    Equipment = equipmentStage[i].Item2.Substring(0, equipmentStage[i].Item2.Length - 2)
+                });
+            }
+
+           stage_DataGrid.ItemsSource = data;
+        }
+
+
     }
 }

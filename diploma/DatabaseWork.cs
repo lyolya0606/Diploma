@@ -137,7 +137,7 @@ namespace Diploma {
                 string myreader = sqlite_datareader.GetString(0);
                 marks.Add(myreader);
             }
-
+            sqlite_conn.Close();
             return marks;
         }
 
@@ -173,7 +173,7 @@ namespace Diploma {
                 string myreader = sqlite_datareader.GetString(0);
                 name = myreader;
             }
-
+            sqlite_conn.Close();
             return name;
         }
 
@@ -192,7 +192,7 @@ namespace Diploma {
                 string myreader = sqlite_datareader.GetString(0);
                 area = myreader;
             }
-
+            sqlite_conn.Close();
             return area;
         }
 
@@ -211,8 +211,9 @@ namespace Diploma {
             while (sqlite_datareader.Read()) {
                 string myreader = sqlite_datareader.GetString(0);
                 scheme = myreader;
+                break;
             }
-
+            sqlite_conn.Close();
             return scheme;
         }
 
@@ -231,7 +232,7 @@ namespace Diploma {
                 int myreader = sqlite_datareader.GetInt32(0);
                 id = myreader;
             }
-
+            sqlite_conn.Close();
             return id;
         }
 
@@ -252,8 +253,90 @@ namespace Diploma {
             while (sqlite_datareader.Read()) {
                 equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
             }
-
+            sqlite_conn.Close();
             return equipment;
         }
+
+
+        public List<int> GetSequenceStages(string mark) {
+            List<int> sequence = new();
+            int id = GetIdFreon(mark);
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT sequence FROM recipe WHERE id_final_product = @id_final_product";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id_final_product", id));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                string myreader = sqlite_datareader.GetString(0);
+                sequence = myreader.Split('-').Select(Int32.Parse).ToList();
+                break;
+            }
+            sqlite_conn.Close();
+            return sequence;
+        }
+
+        public string GetStage(int id) {
+            string stage = "";
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT name FROM stage WHERE id_stage = @id_stage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id_stage", id));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                string myreader = sqlite_datareader.GetString(0);
+                stage = myreader; ;
+            }
+            sqlite_conn.Close();
+            return stage;
+        }
+
+        public string GetStageEquipment(int idStage) {
+            string equipment = "";
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT equipment.designation FROM equipment JOIN " +
+                "equipment_for_stage ON equipment.id_equipment = equipment_for_stage.id_equipment " +
+                "WHERE equipment_for_stage.id_stage = @idStage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idStage", idStage));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                equipment += sqlite_datareader.GetString(0) + ", ";
+            }
+            sqlite_conn.Close();
+            return equipment;
+        }
+
+        public Dictionary<string, string> GetEquipment(int idStage) {
+            Dictionary<string, string> equipment = new();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT equipment.name, equipment.designation FROM equipment " +
+                "JOIN equipment_for_stage ON equipment.id_equipment = equipment_for_stage.id_equipment " +
+                "WHERE equipment_for_stage.id_stage = @idStage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idStage", idStage));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                equipment[sqlite_datareader.GetString(1)] = sqlite_datareader.GetString(0);
+            }
+            sqlite_conn.Close();
+            return equipment;
+        }
+
     }
 }
