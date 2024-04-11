@@ -413,6 +413,9 @@ namespace Diploma {
             //designation_DataGrid.Items.Clear();
             designation_DataGrid.ItemsSource = null;
             designation_DataGrid.Columns.Clear();
+
+            stage_DataGrid.ItemsSource = null;
+            stage_DataGrid.Columns.Clear();
             //designation_DataGrid.Items.Refresh();
 
             string mark = (string)marks_ComboBox.SelectedItem;
@@ -426,8 +429,23 @@ namespace Diploma {
             string scheme = _databaseWork.GetSchemeFreon(mark);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
 
-            List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(mark);
-            FillTableEquip(equipment);
+            //List<Tuple<string, string>> equipment = _databaseWork.GetEquipment(mark);
+            //FillTableEquip(equipment);
+            Dictionary<string, string> equipmentFull = new();
+
+            List<Tuple<string, string>> equipmentStage = [];
+            List<int> sequenceStage = _databaseWork.GetSequenceStages(mark);
+            foreach (int i in sequenceStage) {
+                equipmentStage.Add(new Tuple<string, string>(_databaseWork.GetStage(i), _databaseWork.GetStageEquipment(i)));
+                Dictionary<string, string> equipmentNotFull = _databaseWork.GetEquipment(i);
+                foreach (string key in equipmentNotFull.Keys) {
+                    if (!equipmentFull.ContainsKey(key)) {
+                        equipmentFull.Add(key, equipmentNotFull[key]);
+                    }
+                }
+            }
+            FillTableStage(equipmentStage);
+            FillTableEquip(equipmentFull);
         }
 
         private void FillTableEquip(List<Tuple<string, string>> designations) {

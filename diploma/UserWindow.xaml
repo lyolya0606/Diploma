@@ -59,7 +59,7 @@
                                 <DataGrid x:Name="designation_DataGrid" Height="130" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White"/>
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Margin="50, 0, 0, 0">
+                            <StackPanel Orientation="Horizontal" Margin="15, 0, 0, 0">
                                 <StackPanel.ScrollOwner>
                                     <ScrollViewer/>
                                 </StackPanel.ScrollOwner>

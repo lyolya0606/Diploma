@@ -36,7 +36,7 @@ namespace Diploma {
 
         public List<List<double>> RunScript() {
             string scriptName = @"..\..\..\ImportantFiles\math_model.py";
-            Runtime.PythonDLL = @"python-3.9.13-embed-amd64\python39.dll";
+            Runtime.PythonDLL = @"python\python39.dll";
             PythonEngine.Initialize();
             List<List<double>> concentation = new();
             try {
