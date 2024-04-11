@@ -10,7 +10,7 @@ namespace Diploma {
     public class DatabaseWork {
 
         private SQLiteConnection _sqlite_conn;
-        private string _pathToDB = @"Data Source=..\..\..\ImportantFiles\databaseCourseWork.db";
+        private string _pathToDB = @"Data Source=..\..\..\ImportantFiles\databaseDiploma.db";
         public DatabaseWork() {
    
         }
@@ -175,6 +175,25 @@ namespace Diploma {
             }
             sqlite_conn.Close();
             return name;
+        }
+
+        public string GetFormulaFreon(string mark) {
+            string formula = "";
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT chemical_formula FROM final_product WHERE designation = @designation";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", mark));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                string myreader = sqlite_datareader.GetString(0);
+                formula = myreader;
+            }
+            sqlite_conn.Close();
+            return formula;
         }
 
         public string GetArea(string mark) {

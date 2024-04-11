@@ -321,8 +321,12 @@ namespace Diploma {
             string name = _databaseWork.GetNameFreon(marks[0]);
             name_label.Content = name;
 
+            string formula = _databaseWork.GetFormulaFreon(marks[0]);
+            formula_label.Content = formula;
+
             string area = _databaseWork.GetArea(marks[0]);
-            area_label.Text = area;
+           // area_label.Text = area;
+            area_label.Content = area;
 
             string scheme = _databaseWork.GetSchemeFreon(marks[0]);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
@@ -423,8 +427,12 @@ namespace Diploma {
             string name = _databaseWork.GetNameFreon(mark);
             name_label.Content = name;
 
+            string formula = _databaseWork.GetFormulaFreon(mark);
+            formula_label.Content = formula;
+
             string area = _databaseWork.GetArea(mark);
-            area_label.Text = area;
+            // area_label.Text = area;
+            area_label.Content = area;
 
             string scheme = _databaseWork.GetSchemeFreon(mark);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
