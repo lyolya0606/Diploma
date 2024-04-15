@@ -7,7 +7,7 @@
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Информациооная система выбора оборудования для производства озонобезопасных хладонов" Height="760" Width="1500"
+        Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="760" Width="1500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
@@ -54,7 +54,7 @@
 
                         <StackPanel Orientation="Vertical" Margin="10, 0, 10, 0">
                             <Label Content="Технологическая схема" FontSize="14" Width="182" FontWeight="Bold"/>
-                            <Image x:Name="scheme_image" Width="1200" Height="380" />
+                            <Image x:Name="scheme_image" Width="1200" Height="380" MouseDown="scheme_image_MouseDown" />
                         </StackPanel>
                         <StackPanel  Orientation="Horizontal" Margin="10, 10, 10, 20">
                             <StackPanel Orientation="Horizontal">
@@ -70,7 +70,7 @@
                                     <ScrollViewer/>
                                 </StackPanel.ScrollOwner>
                                 <Label Content="Стадии:" FontSize="14" Width="70" FontWeight="Bold"/>
-                                <DataGrid x:Name="stage_DataGrid" Height="130" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White"/>
+                                <DataGrid x:Name="stage_DataGrid" Height="130" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White" SelectionChanged="stage_DataGrid_SelectionChanged"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -91,9 +91,9 @@
                 </TabItem.Header>
 
                 <TabItem.Content>
-                    <StackPanel Orientation="Horizontal"  Margin="10, 0, 10, 5">
-                        <StackPanel Orientation="Vertical" Margin="20, 10, 10, 0" Width="338">
-                            <Button Margin="0, 10, 0, 0" x:Name="calculateButton" Background="#FFC5FCDE" HorizontalAlignment="Center" FontSize="14" Height="32" Width="87" FontWeight="Bold" Content="Рассчитать" VerticalAlignment="Center" Click="calculateButton_Click"/>
+                    <StackPanel Orientation="Horizontal"  Margin="0, 0, 0, 28">
+                        <StackPanel Orientation="Vertical" Margin="20, 0, 10, 0" Width="338">
+                            <Button Margin="0, 5, 0, 0" x:Name="calculateButton" Background="#FFC5FCDE" HorizontalAlignment="Center" FontSize="14" Height="32" Width="87" FontWeight="Bold" Content="Рассчитать" VerticalAlignment="Center" Click="calculateButton_Click"/>
                             <ProgressBar x:Name="progressBar" Height="10" Width="87" Background="White" Margin="0, 2, 0, 0"/>
 
                             <StackPanel Margin="0, 10, 0, 0">
@@ -106,14 +106,15 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Vertical" Margin="10, 10, 10, 0">
+                        <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Margin="0, 10, 100, 0" x:Name="kineticsButton" Background="White" FontSize="14" Height="32" Width="289" FontWeight="Bold" Content="Посмотреть кинетические параметры" Click="kineticsButton_Click"/>
                                 <Button Margin="0, 10, 0, 0" x:Name="chooseButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Выбрать вещество" Click="chooseButtonClick"/>
                                 <Button Margin="100, 10, 0, 0" x:Name="showTableButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Показать таблицу" Click="showTableButton_Click" IsEnabled="False"/>
                             </StackPanel>
 
-                            <StackPanel Margin="10, 22, 30, 0" Width="1073">
-                                <wpf:CartesianChart x:Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1044"/>
+                            <StackPanel Margin="0, 22, 30, 0" Width="1088">
+                                <wpf:CartesianChart x:Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1078"/>
                             </StackPanel>
 
                             <StackPanel Margin="0, 10, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">

@@ -184,7 +184,8 @@ namespace Diploma {
             SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
             sqlite_conn.Open();
             sqlite_cmd = sqlite_conn.CreateCommand();
-            sqlite_cmd.CommandText = "SELECT chemical_formula FROM final_product WHERE designation = @designation";
+            sqlite_cmd.CommandText = "SELECT formula FROM final_product JOIN chemical_formula ON " +
+                "chemical_formula.id_chemical_formula = final_product.id_chemical_formula WHERE final_product.designation = @designation";
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", mark));
             sqlite_datareader = sqlite_cmd.ExecuteReader();
 

@@ -456,6 +456,7 @@ namespace Diploma {
             FillTableEquip(equipmentFull);
         }
 
+
         private void FillTableEquip(List<Tuple<string, string>> designations) {
             SetUpColumnsEquip();
             List<DataForTableEquip> data = new();
@@ -468,6 +469,7 @@ namespace Diploma {
 
             designation_DataGrid.ItemsSource = data;
         }
+
 
         private void FillTableEquip(Dictionary<string, string> designations) {
             SetUpColumnsEquip();
@@ -482,6 +484,11 @@ namespace Diploma {
             designation_DataGrid.ItemsSource = data;
         }
 
+        private void kineticsButton_Click(object sender, RoutedEventArgs e) {
+            ShowKineticsWindow showKineticsWindow = new();
+            showKineticsWindow.ShowDialog();
+        }
+
         private void FillTableStage(List<Tuple<string, string>> equipmentStage) {
             SetUpColumnsStage();
             List<DataForTableStage> data = new();
@@ -493,6 +500,27 @@ namespace Diploma {
             }
 
            stage_DataGrid.ItemsSource = data;
+        }
+
+
+
+        private void stage_DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            int selectedRow = stage_DataGrid.SelectedIndex;
+            if (selectedRow == -1) { return; }
+            string stageName = (selectedRow + 1).ToString();
+
+            if (marks_ComboBox.SelectedIndex == 0) {
+                string path = "..\\..\\..\\schemes\\" + stageName + "_scheme_freon134a.png";
+                scheme_image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
+                // scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\1_scheme_freon134a.png", UriKind.Relative));
+            }
+        }
+
+
+        private void scheme_image_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (marks_ComboBox.SelectedIndex == 0) {
+                scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\scheme_freon134a.png", UriKind.Relative));
+            }
         }
 
 
