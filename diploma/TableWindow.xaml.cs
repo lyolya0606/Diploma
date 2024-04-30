@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 namespace Diploma {
@@ -18,11 +20,14 @@ namespace Diploma {
     /// </summary>
     public partial class TableWindow : Window {
         private List<List<double>> _concentrations = new();
+        List<string> _components = new();
 
-        public TableWindow(List<List<double>> concentrations) {
+        public TableWindow(List<List<double>> concentrations, List<string> components) {
             InitializeComponent();
             _concentrations = concentrations;
-            FillTable();
+            _components = components;
+            //FillTable();
+            FillTableNew();
         }
 
         private void SetUpColumns() {
@@ -249,6 +254,82 @@ namespace Diploma {
             //}
             valuesDataGrid.ItemsSource = data;
         }
+
+        private void FillTableNew() {
+            List<List<double>> _data = new();
+            //int num = 1;
+            //foreach (var dict in matrix) {
+            //    List<int> row = new List<int>();
+            //    row.Add(num);
+            //    foreach (var key in dict.Keys) {
+            //        row.Add(dict[key]);
+            //    }
+            //    _data.Add(row);
+            //    num++;
+            //}
+
+
+            //foreach (var list in _concentrations) {
+            //    List<double> row = new();
+            //   // row.Add(num)
+            //   foreach (var l in list) {
+            //        row.Add(Math.Round(l, 5));
+            //   }
+            //   _data.Add(row);
+            //}
+
+            //_components.Insert(0, "Время контакта");
+
+            //valuesDataGrid.ItemsSource = _data;
+
+            //for (int i = 0; i < _components.Count; i++) {
+            //    var column = new DataGridTextColumn {
+            //        Header = _components[i],
+            //        Binding = new Binding($"[{i}]")
+            //    };
+            //    valuesDataGrid.Columns.Add(column);
+            //}
+
+
+
+            List<List<double>> transposedMatrix = new List<List<double>>();
+
+
+            for (int col = 0; col < _concentrations[0].Count; col++) {
+  
+                List<double> transposedRow = new List<double>();
+
+  
+                for (int row = 0; row < _concentrations.Count; row++) {
+                    transposedRow.Add(_concentrations[row][col]);
+                }
+
+
+                transposedMatrix.Add(transposedRow);
+            }
+
+            ObservableCollection<ObservableCollection<double>> dataGridSource = new ObservableCollection<ObservableCollection<double>>();
+
+
+            foreach (List<double> row in transposedMatrix) {
+                ObservableCollection<double> observableRow = new ObservableCollection<double>(row);
+                dataGridSource.Add(observableRow);
+            }
+            _components.Insert(0, "Время контакта");
+
+            valuesDataGrid.ItemsSource = dataGridSource;
+
+
+            for (int i = 0; i < transposedMatrix[0].Count; i++) {
+                var column = new DataGridTextColumn {
+                    Header = _components[i],
+                    Binding = new Binding($"[{i}]"),
+                };
+                valuesDataGrid.Columns.Add(column);
+            }
+        }
+
+
     }
 }
  

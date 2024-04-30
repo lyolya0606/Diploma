@@ -9,12 +9,14 @@ using Python.Runtime;
 using System.IO;
 using System.Net;
 using System.Globalization;
+using System.Windows.Media;
 
 namespace Diploma {
     class PythonMathModel {
         private List<double> _startConcentration = new();
         private List<double> _aValues = new();
         private List<double> _eValues = new();
+        private List<List<int>> _matrix = new();
         private double _temperature;
         private string _method;
         //private List<double> _reactionSpeed = new();
@@ -22,7 +24,7 @@ namespace Diploma {
         private const int COUNT_OF_ELEMENTS = 23;
         private const int COUNT_OF_SPEED = 21;
 
-        public PythonMathModel(List<double> startConcentration, List<double> aValues, List<double> eValues, double temperature,  double contactTime, string method) {
+        public PythonMathModel(List<double> startConcentration, List<double> aValues, List<double> eValues, double temperature,  double contactTime, string method, List<List<int>> matrix) {
             _startConcentration = startConcentration;
             _aValues = aValues;
             _eValues = eValues;
@@ -30,12 +32,14 @@ namespace Diploma {
            // _reactionSpeed = reactionSpeed;
             _contactTime = contactTime;
             _method = method;
+            _matrix = matrix;
         }
 
 
 
         public List<List<double>> RunScript() {
-            string scriptName = @"..\..\..\ImportantFiles\math_model.py";
+            //string scriptName = @"..\..\..\ImportantFiles\math_model.py";
+            string scriptName = @"..\..\..\ImportantFiles\math_model_python.py";
             Runtime.PythonDLL = @"python\python39.dll";
             PythonEngine.Initialize();
             List<List<double>> concentation = new();
@@ -46,20 +50,30 @@ namespace Diploma {
                         var scriptFileName = scriptName;
                         var compiledFile = PythonEngine.Compile(File.ReadAllText(scriptFileName), scriptFileName);
 
-                        scope.Execute(compiledFile); 
+                        scope.Execute(compiledFile);
+
+                        var matrixPy = new PyList();
+                        foreach (var row in _matrix) {
+                            var rowPy = new PyList();
+
+                            foreach (int element in row) {
+                                rowPy.Append(new PyInt(element));
+                            }
+                            matrixPy.Append(rowPy);
+                        }
 
                         var concentrationListPy = new PyList();
-                        for (int i = 0; i < COUNT_OF_ELEMENTS; i++) {
+                        for (int i = 0; i < _matrix[0].Count; i++) {
                             concentrationListPy.Append(new PyFloat(_startConcentration[i]));
                         }
 
                         var aListPy = new PyList();
-                        for (int i = 0; i < COUNT_OF_SPEED; i++) {
+                        for (int i = 0; i < _matrix.Count; i++) {
                             aListPy.Append(new PyFloat(_aValues[i]));
                         }
 
                         var eListPy = new PyList();
-                        for (int i = 0; i < COUNT_OF_SPEED; i++) {
+                        for (int i = 0; i < _matrix.Count; i++) {
                             eListPy.Append(new PyFloat(_eValues[i]));
                         }
 
@@ -72,7 +86,7 @@ namespace Diploma {
                         NumberFormatInfo format = new NumberFormatInfo();
                         format.NumberGroupSeparator = ".";
 
-                        var result = scope.InvokeMethod("calculate_math_model", new PyObject[] { concentrationListPy, aListPy, eListPy, temperaturePy, contactTimePy, methodPy }).ToString();
+                        var result = scope.InvokeMethod("calculate_math_model", new PyObject[] { concentrationListPy, aListPy, eListPy, temperaturePy, contactTimePy, methodPy, matrixPy }).ToString();
                         dynamic concentrationsJson = JsonConvert.DeserializeObject(result);
 
 

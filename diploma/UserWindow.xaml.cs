@@ -30,14 +30,46 @@ namespace Diploma {
         private const int COUNT_OF_ELEMENTS = 23;
         private const int COUNT_OF_REACTIONS = 21;
         private List<List<double>> _concentrations = new();
-        private List<int> _chosenElements = new() { 17 };
+
+        private int _mainProductIndex = 17;
+
+        private List<int> _chosenElements = new();
+
+        private List<List<int>> _kineticMatrix = new();
+        private List<string> _kineticComponents = new();
         //private ChooseElementWindow _chooseElementWindow = new() { 17 };
-        private List<string> _elements = new() { "CCl" + '\u2082' + "=CClH", "HF", "CrF" + '\u2083', "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]",
+
+        private static List<string> _elements = new() { "CCl" + '\u2082' + "=CClH", "HF", "CrF" + '\u2083', "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]",
             "CFCl" + '\u2082' + "-CClH" + '\u2082', "CFCl=CClH", "HCl", "[CFCl" + '\u2082' + " - CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "[CFCl=CClH * HF * CrF" + '\u2083' + "]",
             "CF" + '\u2082' + "Cl-CClH" + '\u2082', "CrF" + '\u2082' + "Cl", "CCl" + '\u2083' + "-CClH" + '\u2082', "[CCl" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]",
-            "[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2082' + "=CClH", "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF", "CF" + '\u2083' + "-CClH" + '\u2082',
+            "[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2082' + "=CClH", "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF" + "]", "CF" + '\u2083' + "-CClH" + '\u2082',
             "CF" + '\u2083' + "-CFH" + '\u2082', "[2CF" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2083' + "-CH" + '\u2083', "CF" + '\u2083' + "-CCl" + '\u2082' + "H",
             "CF" + '\u2083' + "-CFClH", "CF" + '\u2083' + "-CF" + '\u2082' + "H"};
+
+        private static List<string> _reactions = new() {
+            _elements[0] + " + " + _elements[1] + " + " + _elements[2] + " -> " + _elements[3],
+            _elements[3] + " -> " + _elements[4] + " + " + _elements[2],
+            _elements[4] + " + " + _elements[2] + " -> " + _elements[7],
+            _elements[7] + " -> " + _elements[5] + " + " + _elements[6] + " + " + _elements[2],
+            _elements[5] + " + " + _elements[1] + " + " + _elements[2] + " -> " + _elements[8],
+            _elements[8] + " -> " + _elements[9] + " + " + _elements[2],
+            _elements[4] + " + " + _elements[2] + " -> " + _elements[9] + " + " + _elements[10],
+            _elements[1] + " + " + _elements[10] + " -> " + _elements[6] + " + " + _elements[2],
+            _elements[4] + " + " + _elements[10] + " -> " + _elements[11] + " + " + _elements[2],
+            _elements[11] + " + " + _elements[2] + " -> " + _elements[12],
+            _elements[12] + " -> " + _elements[0] + " + " + _elements[6] + " + " + _elements[2],
+            _elements[9] + " + " + _elements[2] + " -> " + _elements[13],
+            _elements[13] + " -> " + _elements[14] + " + " + _elements[6] + " + " + _elements[2],
+            _elements[14] + " + " + _elements[1] + " + " + _elements[2] + " -> " + _elements[15],
+            _elements[15] + " -> " + _elements[16] + " + " + _elements[2],
+            _elements[9] + " + " + _elements[2] + " -> " + _elements[16] + " + " + _elements[10],
+            _elements[16] + " + " + _elements[2] + " -> " + _elements[17] + " + " + _elements[10],
+            "2" + _elements[16] + " + " + _elements[2] + " -> " + _elements[18],
+            _elements[18] + " -> " + _elements[19] + " + " + _elements[20] + " + " + _elements[2],
+            _elements[20] + " + " + _elements[2] + " -> " + _elements[21] + " + " + _elements[10],
+            _elements[21] + " + " + _elements[2] + " -> " + _elements[22] + " + " + _elements[10],
+        };
+
         private bool _isBackButton = false;
         private bool _ifFirstEnter = true;
         private List<double> _aValues = new();
@@ -57,13 +89,20 @@ namespace Diploma {
             //concChart.AxisY.Clear();
             //GetValues();
             FirstEntering();
-        }
 
-        private void GetValues() {
+            
+            Kinetic kinetic = new(_reactions);
+
+            _kineticMatrix = kinetic.GetBiMatrix();
+            _kineticComponents = kinetic.GetAllElements();
             DatabaseWork databaseWork = new DatabaseWork();
             _aValues = databaseWork.GetAValues();
             _eValues = databaseWork.GetEValues();
+            _chosenElements.Add(_mainProductIndex);
 
+        }
+
+        private void GetValues() {
             StreamReader sr = new StreamReader(@"..\..\..\ImportantFiles\method.txt");
             string line = sr.ReadLine();
             sr.Close();
@@ -129,13 +168,13 @@ namespace Diploma {
             NumberFormatInfo format = new NumberFormatInfo();
             format.NumberGroupSeparator = ".";
 
-            for (int i = 0; i < COUNT_OF_ELEMENTS; i++) {
+            for (int i = 0; i < _kineticMatrix[0].Count; i++) {
                 try {
                     var x = concDataGrid.Columns[1].GetCellContent(concDataGrid.Items[i]) as TextBlock;
          
                     startConcentrations.Add(double.Parse(x.Text, format));
                 } catch (Exception)  {
-                    
+                    MessageBox.Show("You entered bad data", "Warning!");
                 } 
 
             }
@@ -171,26 +210,27 @@ namespace Diploma {
 
 
             await Task.Run(() => {
-                PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
+                PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method, _kineticMatrix);
+                //PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
                 _concentrations = pythonMathModel.RunScript();
 
             });
             
         }
 
-        private async void StartWorking() {
+
+        private async  void StartWorking() {
             finishConcLabel.Content = "-";
             calculateButton.Content = "Подсчет...";
             progressBar.IsIndeterminate = true;
 
             await DoWorkAsync();
 
-
             DrawCharts();
             calculateButton.Content = "Рассчитать";
             showTableButton.IsEnabled = true;
-            //finishConcLabel.Content = _concentrations[18][_concentrations[18].Count - 1];
-            finishConcLabel.Content = Math.Round(_concentrations[18][_concentrations[18].Count - 1], 4);
+
+            finishConcLabel.Content = Math.Round(_concentrations[_mainProductIndex + 1][_concentrations[_mainProductIndex + 1].Count - 1], 4);
             progressBar.IsIndeterminate = false;
             progressBar.Value = 0;
 
@@ -207,19 +247,19 @@ namespace Diploma {
         Func<double, string> FormatFunc = (x) => string.Format("{0:0.0000}", x);
 
         private void showTableButton_Click(object sender, RoutedEventArgs e) {
-            TableWindow tableWindow = new TableWindow(_concentrations);
+            TableWindow tableWindow = new TableWindow(_concentrations, _kineticComponents);
             tableWindow.ShowDialog();
         }
 
         private void chooseButtonClick(object sender, RoutedEventArgs e) {
             if (_ifFirstEnter) {
-                List<int> firstElements = new() { 17 };
-                ChooseElementWindow chooseElementWindow = new(firstElements);
+                List<int> firstElements = new() { _mainProductIndex };
+                ChooseElementWindow chooseElementWindow = new(firstElements, _kineticComponents);
                 chooseElementWindow.ShowDialog();
                 _chosenElements = chooseElementWindow.GetChosenElements();
                 _ifFirstEnter = false;
             } else {
-                ChooseElementWindow chooseElementWindow = new(_chosenElements);
+                ChooseElementWindow chooseElementWindow = new(_chosenElements, _kineticComponents);
                 chooseElementWindow.ShowDialog();
                 _chosenElements = chooseElementWindow.GetChosenElements();
             }
@@ -258,6 +298,7 @@ namespace Diploma {
                     points.Add(new ObservablePoint {
                         X = Math.Round(_concentrations[0][i], 4),
                         Y = _concentrations[item + 1][i]
+                        //Y = _concentrations[1][i]
                     });
 
                 LineSeries line = new LineSeries {
@@ -265,7 +306,7 @@ namespace Diploma {
                     PointGeometrySize = 8,
                     Fill = Brushes.Transparent,
                     LabelPoint = PointLabel,
-                    Title = _elements[item],
+                    Title = _kineticComponents[item],
                     Stroke = _colors[color],
                
                 };
@@ -485,8 +526,42 @@ namespace Diploma {
         }
 
         private void kineticsButton_Click(object sender, RoutedEventArgs e) {
-            ShowKineticsWindow showKineticsWindow = new();
+            ShowKineticsWindow showKineticsWindow = new(_reactions, _aValues, _eValues, _mainProductIndex);
             showKineticsWindow.ShowDialog();
+
+            //Kinetic kinetic = new(_reactions);
+
+            //_kineticMatrix = kinetic.GetBiMatrix();
+            //_kineticComponents = kinetic.GetComponents();
+
+
+            concDataGrid.ItemsSource = null;
+            concDataGrid.Columns.Clear();
+
+
+            _aValues = showKineticsWindow.GetAValue();
+            _eValues = showKineticsWindow.GetEValue();
+            _reactions = showKineticsWindow.GetAllReactions();
+            _kineticMatrix = showKineticsWindow.GetKineticMatrix();
+            _mainProductIndex = showKineticsWindow.GetMainProductIndex();
+            _chosenElements = new() { _mainProductIndex };
+
+            Kinetic kinetic = new(_reactions);
+            _kineticComponents = kinetic.GetAllElements();
+            //_kineticComponents.Remove("№");
+            _kineticMatrix = kinetic.GetBiMatrix();
+
+            SetUpColumns();
+            List<DataForTable> data = new();
+            foreach (var component in _kineticComponents) {
+                if (data.Count == _mainProductIndex) {
+                    data.Add(new DataForTable { Element = component, Concentration = 0 });
+                } else {
+                    data.Add(new DataForTable { Element = component, Concentration = 0.01 });
+                }
+            }
+            concDataGrid.ItemsSource = data;
+
         }
 
         private void FillTableStage(List<Tuple<string, string>> equipmentStage) {

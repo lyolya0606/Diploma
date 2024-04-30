@@ -20,45 +20,50 @@ namespace Diploma {
         private const int COUNT_OF_ELEMENTS = 23;
         private List<CheckBox> _checkBoxes = new();
         private List<int> _chosenElements = new();
+        private List<string> _components = new();
         private bool _firstEnter = true;
         private bool _fillAll = true;
 
-        public ChooseElementWindow(List<int> chosenElements) {
+        public ChooseElementWindow(List<int> chosenElements, List<string> components) {
             InitializeComponent();
-            FillCheckBoxes();
             _chosenElements = chosenElements;
+            _components = components;
+            FillCheckBoxes();
+ 
 
             foreach (int element in _chosenElements) {
                 _checkBoxes[element].IsChecked = true;
             }
+
         }
 
         private void FillCheckBoxes() {
-            List<string> elements = new List<string>() { "CCl" + '\u2082' + "=CClH", "HF", "CrF" + '\u2083', "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]",
-            "CFCl" + '\u2082' + "-CClH" + '\u2082', "CFCl=CClH", "HCl", "[CFCl" + '\u2082' + " - CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "[CFCl=CClH * HF * CrF" + '\u2083' + "]",
-            "CF" + '\u2082' + "Cl-CClH" + '\u2082', "CrF" + '\u2082' + "Cl", "CCl" + '\u2083' + "-CClH" + '\u2082', "[CCl" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]",
-            "[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2082' + "=CClH", "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF", "CF" + '\u2083' + "-CClH" + '\u2082',
-            "CF" + '\u2083' + "-CFH" + '\u2082', "[2CF" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2083' + "-CH" + '\u2083', "CF" + '\u2083' + "-CCl" + '\u2082' + "H",
-            "CF" + '\u2083' + "-CFClH", "CF" + '\u2083' + "-CF" + '\u2082' + "H"};
+            //List<string> elements = new List<string>() { "CCl" + '\u2082' + "=CClH", "HF", "CrF" + '\u2083', "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]",
+            //"CFCl" + '\u2082' + "-CClH" + '\u2082', "CFCl=CClH", "HCl", "[CFCl" + '\u2082' + " - CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "[CFCl=CClH * HF * CrF" + '\u2083' + "]",
+            //"CF" + '\u2082' + "Cl-CClH" + '\u2082', "CrF" + '\u2082' + "Cl", "CCl" + '\u2083' + "-CClH" + '\u2082', "[CCl" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]",
+            //"[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2082' + "=CClH", "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF", "CF" + '\u2083' + "-CClH" + '\u2082',
+            //"CF" + '\u2083' + "-CFH" + '\u2082', "[2CF" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", "CF" + '\u2083' + "-CH" + '\u2083', "CF" + '\u2083' + "-CCl" + '\u2082' + "H",
+            //"CF" + '\u2083' + "-CFClH", "CF" + '\u2083' + "-CF" + '\u2082' + "H"};
 
    
-            for (int i = 0; i < COUNT_OF_ELEMENTS; i++) {
+            for (int i = 0; i < _components.Count; i++) {
                 CheckBox box = new CheckBox();
-                box.Content = elements[i];
+                box.Content = _components[i];
                 box.Name = "c" + i.ToString();
                 _checkBoxes.Add(box);
             }
 
-            //if (_firstEnter) {
-            //    _checkBoxes[17].IsChecked = true;
-            //    _firstEnter = false;
-            //}
 
-            elementsGroupBox.Content = new StackPanel() {
-                Children = { _checkBoxes[0], _checkBoxes[1], _checkBoxes[2], _checkBoxes[3], _checkBoxes[4], _checkBoxes[5], _checkBoxes[6], _checkBoxes[7], _checkBoxes[8], _checkBoxes[9],
-                _checkBoxes[10], _checkBoxes[11], _checkBoxes[12], _checkBoxes[13], _checkBoxes[14], _checkBoxes[15], _checkBoxes[16], _checkBoxes[17], _checkBoxes[18], _checkBoxes[19],
-                _checkBoxes[20], _checkBoxes[21], _checkBoxes[22] }
-            };
+            //elementsGroupBox.Content = new StackPanel() {
+            //    Children = { _checkBoxes[0], _checkBoxes[1], _checkBoxes[2], _checkBoxes[3], _checkBoxes[4], _checkBoxes[5], _checkBoxes[6], _checkBoxes[7], _checkBoxes[8], _checkBoxes[9],
+            //    _checkBoxes[10], _checkBoxes[11], _checkBoxes[12], _checkBoxes[13], _checkBoxes[14], _checkBoxes[15], _checkBoxes[16], _checkBoxes[17], _checkBoxes[18], _checkBoxes[19],
+            //    _checkBoxes[20], _checkBoxes[21], _checkBoxes[22] }
+            //};
+            var stackPanel = new StackPanel();
+            for (int i = 0; i < _components.Count; i++) {
+                stackPanel.Children.Add(_checkBoxes[i]);
+            }
+            elementsGroupBox.Content = stackPanel;
         }
 
         public List<int> GetChosenElements() {

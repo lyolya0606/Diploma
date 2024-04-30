@@ -6,21 +6,85 @@
         xmlns:local="clr-namespace:Diploma"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Просмотр кинетических параметров" Height="554" Width="471"
+        Title="Просмотр кинетических параметров" Height="680" Width="1500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
+        <Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static DataGrid.FocusBorderBrushKey}}"/>
+                </Trigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsSelected" Value="true"/>
+                        <Condition Property="Selector.IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}"/>
+                </MultiTrigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <StackPanel Orientation="Vertical"  Margin="10, 10, 10, 10">
-        <Label Content="A - предэкспоненциальный множитель, E - энергия активации." FontSize="14"/>
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+            <StackPanel>
+                <Button Background="White" x:Name="save_Button" HorizontalAlignment="Center" FontSize="10" Height="18" Width="105" FontWeight="Bold" Content="Сохранить в файл" Click="save_Button_Click"/>
+                <Button Background="White" x:Name="get_Button" HorizontalAlignment="Center" FontSize="10" Height="18" Width="105" FontWeight="Bold" Content="Загрузить из файла" Margin="0, 5, 0, 0" Click="get_Button_Click"/>
+
+            </StackPanel>
+            <Label Content="A - предэкспоненциальный множитель, E - энергия активации." FontSize="14" Width="453" Margin="10, 0, 0, 0" VerticalAlignment="Center"/>
+            <Label Content="Целевой продукт:"  FontSize="14" Margin="20, 0, 0, 0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="component_ComboBox" Margin="20,0,0,0" VerticalAlignment="Center" Width="181" Height="30" VerticalContentAlignment="Center" FontSize="14" Background="White" BorderBrush="#FF030000" HorizontalAlignment="Center"/>
+        </StackPanel>
         <!--<Label Content="E - энергия активации." FontSize="14"/>-->
-        <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0" HorizontalAlignment="Center" Height="499">
-            
-                <!--<StackPanel.ScrollOwner>
-                    <ScrollViewer/>
-                </StackPanel.ScrollOwner>-->
-            <Label FontWeight="Bold" FontSize="14" Content="Кинетические параметры" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+        <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 0" Height="592">
+            <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0" Height="590" MaxWidth="600">
 
-            <DataGrid x:Name="kinetics_DataGrid" Height="462" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" Background="White" FontSize="14"/>
+                <StackPanel.ScrollOwner>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                </StackPanel.ScrollOwner>
+                <Label FontWeight="Bold" FontSize="14" Content="Кинетические параметры" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 
+                <DataGrid x:Name="kinetics_DataGrid" Height="500" IsReadOnly="False" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Background="White" FontSize="14" BeginningEdit="kinetics_DataGrid_BeginningEdit" RowEditEnding="kinetics_DataGrid_RowEditEnding" InitializingNewItem="kinetics_DataGrid_InitializingNewItem"/>
+                <Button Margin="0, 10, 0, 0" Background="#FFC5FCDE" x:Name="count_Button" HorizontalAlignment="Center" FontSize="14" Height="32" Width="150" FontWeight="Bold" Content="Расчитать матрицу" Click="count_Button_Click"/>
+            </StackPanel>
+
+            <StackPanel Margin="50, 0, 0, 0" MaxWidth="810" Height="590">
+                <StackPanel.ScrollOwner>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+                </StackPanel.ScrollOwner>
+                <Label FontWeight="Bold" FontSize="14" Content="Матрица стехиометрии" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+
+                <DataGrid CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="matrix_DataGrid" Height="500" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="White" FontSize="14" ColumnWidth="33" Margin="0, 0, 0, 0"/>
+                <Button Margin="0, 10, 0, 0" Background="White" x:Name="accept_Button" HorizontalAlignment="Center" FontSize="14" Height="32" Width="90" FontWeight="Bold" Content="Принять" Click="accept_Button_Click"/>
+
+            </StackPanel>
+
+   
         </StackPanel>
 
     </StackPanel>
