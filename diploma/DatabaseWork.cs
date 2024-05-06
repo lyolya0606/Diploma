@@ -358,5 +358,258 @@ namespace Diploma {
             return equipment;
         }
 
+
+        public List<List<string>> GetTableFinalProduct() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM final_product";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetString(2), sqlite_datareader.GetString(3), sqlite_datareader.GetString(4) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableChemic() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM chemical_formula";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1).ToString() };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableEquipment() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM equipment";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+            return table;
+
+        }
+
+        public List<List<string>> GetTableStage() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM stage";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(2) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+            return table;
+
+        }
+
+        public void UpdateFinalProduct(string id, string name, string designation, string area) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE final_product SET name = @name, designation = @designation, " +
+                "application_area = @area WHERE id_final_product = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@area", area));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateEquipment(string id, string name, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE equipment SET name = @name, designation = @designation WHERE id_equipment = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateStage(string id, string name) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE stage SET name = @name WHERE id_stage = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateChemic(string id, string name) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE chemical_formula SET formula = @formula WHERE id_chemical_formula = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@formula", name));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertFinalProduct(string idChem, string name, string designation, string area) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO final_product (id_chemical_formula, name, designation, application_area) " +
+                                $"VALUES (@id_chemical_formula, @name, @designation, @area)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id_chemical_formula", idChem));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@area", area));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertEquipment(string name, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO equipment (name, designation) " +
+                                $"VALUES (@name, @designation)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertStage(string name) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO stage (name) VALUES (@name)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertChemic(string name) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO chemical_formula (formula) VALUES (@formula)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@formula", name));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteFinalProduct(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM final_product WHERE id_final_product = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteChemic(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM chemical_formula WHERE id_chemical_formula = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteEquipment(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM equipment WHERE id_equipment = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteStage(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM stage WHERE id_stage = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
     }
 }

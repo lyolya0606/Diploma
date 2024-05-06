@@ -19,16 +19,23 @@
 
         <Grid Background="#FFBABABA" Grid.Row="0" Margin="0"/>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1"/>
-        <Grid Background="#FFFAFAFA" Grid.Row="1" Margin="5, 10, 5, 5" >
-            <GroupBox x:Name="elementsGroupBox" Header="Выбрать вещество" FontWeight="Bold" FontSize="14">
-                <StackPanel Margin="0, 10, 0, 0">
+        <Grid Background="#FFFAFAFA" Grid.Row="1" Margin="5, 10, 5, 5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="435">
+                <GroupBox x:Name="elementsGroupBox" Header="Выбрать вещество" FontWeight="Bold" FontSize="14" >
 
-                </StackPanel>
-            </GroupBox>
-            <StackPanel Margin="0,400,0,10" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="allButton" Background="White" FontSize="14" FontWeight="Bold"  Width="105" Content="Выбрать все" Click="allButton_Click" Height="25" Margin="5, 0, 0, 0"/>
+                    <StackPanel Margin="0, 10, 0, 0">
+                        <!-- Здесь будут ваши элементы -->
+                    </StackPanel>
+
+                </GroupBox>
+            </ScrollViewer>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+                <Button x:Name="allButton" Background="White" FontSize="14" FontWeight="Bold" Width="105" Content="Выбрать все" Click="allButton_Click" Height="25" Margin="5, 0, 0, 0"/>
                 <Button x:Name="OKButton" Background="White" FontSize="14" FontWeight="Bold" Content="Применить" Click="OKButton_Click" Margin="60, 0, 5, 0" Height="25"/>
-
             </StackPanel>
         </Grid>
     </Grid>

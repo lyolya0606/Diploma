@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Inter}"
         Title="Просмотр кинетических параметров" Height="680" Width="1500"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Window.Resources>
         <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
         <Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
@@ -70,7 +70,7 @@
                 <Label FontWeight="Bold" FontSize="14" Content="Кинетические параметры" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 
                 <DataGrid x:Name="kinetics_DataGrid" Height="500" IsReadOnly="False" CanUserAddRows="True" CanUserDeleteRows="True" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Background="White" FontSize="14" BeginningEdit="kinetics_DataGrid_BeginningEdit" RowEditEnding="kinetics_DataGrid_RowEditEnding" InitializingNewItem="kinetics_DataGrid_InitializingNewItem"/>
-                <Button Margin="0, 10, 0, 0" Background="#FFC5FCDE" x:Name="count_Button" HorizontalAlignment="Center" FontSize="14" Height="32" Width="150" FontWeight="Bold" Content="Расчитать матрицу" Click="count_Button_Click"/>
+                <Button Margin="0, 10, 0, 0" Background="#FFC5FCDE" x:Name="count_Button" HorizontalAlignment="Center" FontSize="14" Height="32" Width="155" FontWeight="Bold" Content="Рассчитать матрицу" Click="count_Button_Click"/>
             </StackPanel>
 
             <StackPanel Margin="50, 0, 0, 0" MaxWidth="810" Height="590">

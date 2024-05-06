@@ -163,6 +163,7 @@ namespace Diploma {
             FillMatrixTable();
             count_Button.Background = Brushes.White;
 
+            component_ComboBox.Items.Clear();
             Kinetic kinetic = new(_reactions);
             List<string> elements = kinetic.GetAllElements();
             foreach (string el in elements) {
@@ -212,9 +213,14 @@ namespace Diploma {
 
         }
 
-
+        private bool _isAccepted = false;
 
         private void accept_Button_Click(object sender, RoutedEventArgs e) {
+            if (matrix_DataGrid.Items.Count == 0) {
+                MessageBox.Show("Нажмите кнопку Рассчитать матрицу", "Ошибка!");
+                return;
+            }
+            _isAccepted = true;
             ReadMatrix();
             _mainProductIndex = component_ComboBox.SelectedIndex;
             SaveReactionsToFile();
@@ -227,7 +233,7 @@ namespace Diploma {
         }
 
         private void kinetics_DataGrid_InitializingNewItem(object sender, InitializingNewItemEventArgs e) {
-            int rowCount = kinetics_DataGrid.Items.Count + 1;
+            int rowCount = kinetics_DataGrid.Items.Count - 1;
 
             if (e.NewItem is DataForTable newItem) {
                 newItem.Number = rowCount;
@@ -334,6 +340,17 @@ namespace Diploma {
 
             }
             kinetics_DataGrid.ItemsSource = dataForTable;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            if (_isAccepted) {
+                e.Cancel = false;
+            } else {
+                MessageBox.Show("Нажмите кнопку Принять", "Предупреждение!");
+                e.Cancel = true;
+                return;
+            }
+
         }
 
         private void SaveReactionsToFile() {
