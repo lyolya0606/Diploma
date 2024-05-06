@@ -551,6 +551,9 @@ namespace Diploma {
             //_kineticComponents.Remove("№");
             _kineticMatrix = kinetic.GetBiMatrix();
 
+            concDataGrid.ItemsSource = null;
+            concDataGrid.Columns.Clear();
+
             SetUpColumns();
             List<DataForTable> data = new();
             foreach (var component in _kineticComponents) {

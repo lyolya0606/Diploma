@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -129,6 +130,8 @@ namespace Diploma {
             //format.NumberGroupSeparator = ".";
             List<double> aVal = new();
             List<double> eVal = new();
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberGroupSeparator = ".";
 
             for (int i = 0; i < kinetics_DataGrid.Items.Count; i++) {
                 try {
@@ -140,8 +143,8 @@ namespace Diploma {
                         break;
                     }
                     reactions.Add(x.Text.ToString().Replace(" ", ""));
-                    aVal.Add(double.Parse(a.Text.ToString()));
-                    eVal.Add(double.Parse(e.Text.ToString()));
+                    aVal.Add(double.Parse(a.Text.ToString(), format));
+                    eVal.Add(double.Parse(e.Text.ToString(), format));
                 } catch (Exception) {
 
                 }
@@ -314,13 +317,15 @@ namespace Diploma {
             kinetics_DataGrid.Columns.Clear();
             SetUpColumns();
             List<DataForTable> dataForTable = new();
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberGroupSeparator = ".";
 
 
             int i = 1;
             foreach (var el in data) {
                 var list = el.Split("@");
                 try {
-                    dataForTable.Add(new DataForTable { Number = i, Reaction = list[0], AValue = double.Parse(list[1]), EValue = double.Parse(list[2]) });
+                    dataForTable.Add(new DataForTable { Number = i, Reaction = list[0], AValue = double.Parse(list[1], format), EValue = double.Parse(list[2], format) });
                 } catch (Exception) {
                     MessageBox.Show("В файле ошибка", "Ошибка!");
                     return;
