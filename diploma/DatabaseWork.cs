@@ -141,23 +141,6 @@ namespace Diploma {
             return marks;
         }
 
-        //string ReadData(SQLiteConnection conn) {
-        //    string test = "";
-        //    SQLiteDataReader sqlite_datareader;
-        //    SQLiteCommand sqlite_cmd;
-        //    sqlite_cmd = conn.CreateCommand();
-        //    sqlite_cmd.CommandText = "SELECT designation FROM final_product";
-        //    sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-        //    while (sqlite_datareader.Read()) {
-        //        string myreader = sqlite_datareader.GetString(0);
-        //        test += myreader;
-        //    }
-        //    conn.Close();
-        //    return test;
-
-        //}
-
         public string GetNameFreon(string mark) {
             string name = "";
             SQLiteDataReader sqlite_datareader;
@@ -395,7 +378,31 @@ namespace Diploma {
 
             List<List<string>> table = new List<List<string>>();
             while (sqlite_datareader.Read()) {
-                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1).ToString() };
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableRecipe() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM recipe";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetString(2), sqlite_datareader.GetString(3) };
 
                 table.Add(row);
 
@@ -449,6 +456,78 @@ namespace Diploma {
                 //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
             }
             sqlite_conn.Close();
+            return table;
+
+        }
+
+        public List<List<string>> GetTableKinetic() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM kinetic_parameter";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetString(2), sqlite_datareader.GetString(3) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableKineticValue() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM kinetic_parameter_value";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetFloat(2).ToString()};
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableUnit() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM unit_measurement";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
             return table;
 
         }
@@ -509,6 +588,64 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void UpdateRecipe(string id, string idStage, string seq, string scheme) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE recipe SET sequence = @seq, scheme = @scheme WHERE id_final_product = @id AND id_stage = @idStage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@seq", seq));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@scheme", scheme));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idStage", idStage));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateKinetic(string id, string idUnit, string name, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE kinetic_parameter SET id_unit_measurement = @idUnit, name = @name, designation = @designation " +
+                "WHERE id_kinetic_parameter = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idUnit", idUnit));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateKineticValue(string id, string idProd, string value) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE kinetic_parameter_value SET value = @value WHERE id_kinetic_parameter = @id AND id_final_product = @idProd";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@value", value));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idProd", idProd));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void UpdateUnit(string id, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE unit_measurement SET designation = @designation WHERE id_unit_measurement = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
         public void InsertFinalProduct(string idChem, string name, string designation, string area) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
@@ -521,6 +658,22 @@ namespace Diploma {
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@area", area));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertRecipe(string id, string idStage, string seq, string scheme) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO recipe (id_final_product, id_stage, sequence, scheme) " +
+                                $"VALUES (@id, @idStage, @seq, @scheme)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idStage", idStage));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@seq", seq));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@scheme", scheme));
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
         }
@@ -563,6 +716,47 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void InsertKinetic(string idUnit, string name, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO kinetic_parameter (id_unit_measurement, name, designation) VALUES " +
+                "(@idUnit, @name, @designation)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idUnit", idUnit));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertKineticValue(string id, string idProd, string value) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO kinetic_parameter_value (id_kinetic_parameter, id_final_product, value) " +
+                                $"VALUES (@id, @idProd, @value)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idProd", idProd));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@value", value));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertUnit(string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO unit_measurement (designation) VALUES (@designation)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
         public void DeleteFinalProduct(string id) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
@@ -611,5 +805,55 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void DeleteRecipe(string id, string idStage) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM recipe WHERE id_final_product = @id AND id_stage = @idStage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idStage", idStage));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteKinetic(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM kinetic_parameter WHERE id_kinetic_parameter = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+
+        public void DeleteKineticValue(string id, string idProd) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM kinetic_parameter_value WHERE id_final_product = @idProd AND id_kinetic_parameter = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idProd", idProd));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteUnit(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM unit_measurement WHERE id_unit_measurement = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
     }
 }

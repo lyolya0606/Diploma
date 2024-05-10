@@ -89,6 +89,38 @@ namespace Diploma {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;
                     }
+                } else if (_table == "Рецепт") {
+
+                    try {
+                        databaseWork.UpdateRecipe(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text, fourth_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Кинетический параметр") {
+
+                    try {
+                        databaseWork.UpdateKinetic(_id, first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Значение кинетического параметра") {
+
+                    try {
+                        databaseWork.UpdateKineticValue(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Единица измерения") {
+
+                    try {
+                        databaseWork.UpdateUnit(_id, first_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
                 }
 
             } else {
@@ -118,6 +150,38 @@ namespace Diploma {
                 } else if (_table == "Химическая формула") {
                     try {
                         databaseWork.InsertChemic(first_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Рецепт") {
+
+                    try {
+                        databaseWork.InsertRecipe(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text, fourth_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Кинетический параметр") {
+
+                    try {
+                        databaseWork.InsertKinetic(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Значение кинетического параметра") {
+
+                    try {
+                        databaseWork.InsertKineticValue(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Единица измерения") {
+
+                    try {
+                        databaseWork.InsertUnit(first_TextBox.Text);
                     } catch (Exception) {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;
