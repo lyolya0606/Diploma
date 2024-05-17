@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="freony-390x240.png" />
     <None Remove="schemes\10_scheme_freon134a.png" />
     <None Remove="schemes\11_scheme_freon134a.png" />
     <None Remove="schemes\1_scheme_freon134a.png" />
@@ -40,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="freony-390x240.png" />
     <Resource Include="schemes\10_scheme_freon134a.png" />
     <Resource Include="schemes\11_scheme_freon134a.png" />
     <Resource Include="schemes\1_scheme_freon134a.png" />

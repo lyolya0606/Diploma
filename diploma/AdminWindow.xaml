@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Inter}"
         Title="Окно администратора" Height="500" Width="800"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <StackPanel Margin="10, 0, 10, 0">
         <StackPanel Width="54" HorizontalAlignment="Left">
             <Button x:Name="back_Button"  FontWeight="Bold" Content="Выйти" Background="White" BorderBrush="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="back_Button_Click" />

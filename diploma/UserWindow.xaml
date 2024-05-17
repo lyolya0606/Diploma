@@ -9,7 +9,7 @@
         FontFamily="{StaticResource Inter}"
         Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="760" Width="1500"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
 
         <StackPanel>

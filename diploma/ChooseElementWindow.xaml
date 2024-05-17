@@ -9,7 +9,7 @@
         Title="Выбор веществ" Height="500" Width="300"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
-        AllowsTransparency="False">
+        AllowsTransparency="False" Icon="/freony-390x240.png">
     <Grid x:Name="layoutGrid" >
 
         <Grid.RowDefinitions>

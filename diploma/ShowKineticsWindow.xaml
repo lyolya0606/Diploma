@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Inter}"
         Title="Просмотр кинетических параметров" Height="680" Width="1500"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen" Closing="Window_Closing">
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing" Icon="/freony-390x240.png">
     <Window.Resources>
         <SolidColorBrush x:Key="{x:Static DataGrid.FocusBorderBrushKey}" Color="#FF000000"/>
         <Style x:Key="DataGridCellStyle1" TargetType="{x:Type DataGridCell}">
@@ -80,11 +80,13 @@
                 <Label FontWeight="Bold" FontSize="14" Content="Матрица стехиометрии" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
 
                 <DataGrid CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="matrix_DataGrid" Height="500" IsReadOnly="False" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="White" FontSize="14" ColumnWidth="33" Margin="0, 0, 0, 0"/>
+                
+                
                 <Button Margin="0, 10, 0, 0" Background="White" x:Name="accept_Button" HorizontalAlignment="Center" FontSize="14" Height="32" Width="90" FontWeight="Bold" Content="Принять" Click="accept_Button_Click"/>
 
             </StackPanel>
-
-   
+               
+            
         </StackPanel>
 
     </StackPanel>

@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Inter}"
         Title="Авторизация" Height="250" Width="400"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="0,40,0,0">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

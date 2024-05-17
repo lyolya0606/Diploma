@@ -8,7 +8,7 @@
         Title="Редактирование записи" Height="400" Width="580"
         FontFamily="{StaticResource Inter}"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <StackPanel Margin="0, 20, 0, 0">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 0, 10, 0">
             <Label x:Name="first_Label" FontWeight="Bold" FontSize="14" Width="220" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
