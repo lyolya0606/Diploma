@@ -13,19 +13,43 @@
     <None Remove="freony-390x240.png" />
     <None Remove="schemes\10_scheme_freon134a.png" />
     <None Remove="schemes\11_scheme_freon134a.png" />
+    <None Remove="schemes\1_scheme_freon125.png" />
     <None Remove="schemes\1_scheme_freon134a.png" />
+    <None Remove="schemes\1_scheme_freon227ea.png" />
+    <None Remove="schemes\1_scheme_freon23.png" />
+    <None Remove="schemes\2_scheme_freon125.png" />
     <None Remove="schemes\2_scheme_freon134a.png" />
+    <None Remove="schemes\2_scheme_freon227ea.png" />
+    <None Remove="schemes\2_scheme_freon23.png" />
+    <None Remove="schemes\3_scheme_freon125.png" />
     <None Remove="schemes\3_scheme_freon134a.png" />
+    <None Remove="schemes\3_scheme_freon227ea.png" />
+    <None Remove="schemes\3_scheme_freon23.png" />
+    <None Remove="schemes\4_scheme_freon125.png" />
     <None Remove="schemes\4_scheme_freon134a.png" />
+    <None Remove="schemes\4_scheme_freon227ea.png" />
+    <None Remove="schemes\4_scheme_freon23.png" />
+    <None Remove="schemes\5_scheme_freon125.png" />
     <None Remove="schemes\5_scheme_freon134a.png" />
+    <None Remove="schemes\5_scheme_freon227ea.png" />
+    <None Remove="schemes\5_scheme_freon23.png" />
+    <None Remove="schemes\6_scheme_freon125.png" />
     <None Remove="schemes\6_scheme_freon134a.png" />
+    <None Remove="schemes\6_scheme_freon227ea.png" />
+    <None Remove="schemes\6_scheme_freon23.png" />
     <None Remove="schemes\7_scheme_freon134a.png" />
+    <None Remove="schemes\7_scheme_freon227ea.png" />
+    <None Remove="schemes\7_scheme_freon23.png" />
     <None Remove="schemes\8_scheme_freon134a.png" />
     <None Remove="schemes\9_scheme_freon134a.png" />
     <None Remove="schemes\scheme_freon125.png" />
     <None Remove="schemes\scheme_freon134a.png" />
     <None Remove="schemes\scheme_freon227ea.png" />
     <None Remove="schemes\scheme_freon23.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="schemes\6_scheme_freon23.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,13 +68,32 @@
     <Resource Include="freony-390x240.png" />
     <Resource Include="schemes\10_scheme_freon134a.png" />
     <Resource Include="schemes\11_scheme_freon134a.png" />
+    <Resource Include="schemes\1_scheme_freon125.png" />
     <Resource Include="schemes\1_scheme_freon134a.png" />
+    <Resource Include="schemes\1_scheme_freon227ea.png" />
+    <Resource Include="schemes\1_scheme_freon23.png" />
+    <Resource Include="schemes\2_scheme_freon125.png" />
     <Resource Include="schemes\2_scheme_freon134a.png" />
+    <Resource Include="schemes\2_scheme_freon227ea.png" />
+    <Resource Include="schemes\2_scheme_freon23.png" />
+    <Resource Include="schemes\3_scheme_freon125.png" />
     <Resource Include="schemes\3_scheme_freon134a.png" />
+    <Resource Include="schemes\3_scheme_freon227ea.png" />
+    <Resource Include="schemes\3_scheme_freon23.png" />
+    <Resource Include="schemes\4_scheme_freon125.png" />
     <Resource Include="schemes\4_scheme_freon134a.png" />
+    <Resource Include="schemes\4_scheme_freon227ea.png" />
+    <Resource Include="schemes\4_scheme_freon23.png" />
+    <Resource Include="schemes\5_scheme_freon125.png" />
     <Resource Include="schemes\5_scheme_freon134a.png" />
+    <Resource Include="schemes\5_scheme_freon227ea.png" />
+    <Resource Include="schemes\5_scheme_freon23.png" />
+    <Resource Include="schemes\6_scheme_freon125.png" />
     <Resource Include="schemes\6_scheme_freon134a.png" />
+    <Resource Include="schemes\6_scheme_freon227ea.png" />
     <Resource Include="schemes\7_scheme_freon134a.png" />
+    <Resource Include="schemes\7_scheme_freon227ea.png" />
+    <Resource Include="schemes\7_scheme_freon23.png" />
     <Resource Include="schemes\8_scheme_freon134a.png" />
     <Resource Include="schemes\9_scheme_freon134a.png" />
     <Resource Include="schemes\scheme_freon125.png" />

@@ -7,7 +7,7 @@
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="760" Width="1500"
+        Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="800" Width="1500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
@@ -16,7 +16,7 @@
             <Button Content="Выйти" Background="White"  BorderBrush="White" Click="back_ButtonClick" FontWeight="Bold" FontSize="10" HorizontalAlignment="Left" />
         </StackPanel>
         <!--<Button Content="Выйти" Height="27" Width="53" Background="White" BorderBrush="White" Click="Button_Click" FontWeight="Bold"/>-->
-        <TabControl Margin="0, 0, 0, 0"  SelectionChanged="TabControl_SelectionChanged">
+        <TabControl Margin="0, 0, 0, 0"  SelectionChanged="TabControl_SelectionChanged" Height="766">
             <TabItem x:Name="eqiupmentTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -51,6 +51,12 @@
                             <Label Content="Область применения:" FontSize="14" Width="167" FontWeight="Bold"/>
                             <!--<TextBlock Name="area_label" FontSize="14" TextWrapping="Wrap" Margin="5, 0, 0, 0" Width="1294" Height="43" VerticalAlignment="Center"/>-->
                             <Label x:Name="area_label" FontSize="14" Margin="8, 0, 0, 0" Width="auto" Height="auto" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10, 5, 10, 0">
+                            <Label Content="Режимы реактора:" FontSize="14" Width="167" FontWeight="Bold"/>
+                            <!--<TextBlock Name="area_label" FontSize="14" TextWrapping="Wrap" Margin="5, 0, 0, 0" Width="1294" Height="43" VerticalAlignment="Center"/>-->
+                            <Label x:Name="reactorModes_label" FontSize="14" Margin="8, 0, 0, 0" Width="auto" Height="auto" VerticalContentAlignment="Center"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical" Margin="10, 0, 10, 0">

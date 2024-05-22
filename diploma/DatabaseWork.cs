@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.Data;
 
 namespace Diploma {
     public class DatabaseWork {
@@ -854,6 +855,58 @@ namespace Diploma {
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
+        }
+
+
+        public string GetModes(string mark) {
+            List<string> modes = [];
+            int id = GetIdFreon(mark);
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT equipment.designation, equipment_parameter.name, equipment_parameter_value.value, unit_measurement.designation FROM final_product " +
+                "JOIN recipe ON final_product.id_final_product = recipe.id_final_product " +
+                "JOIN stage ON recipe.id_stage = stage.id_stage " +
+                "JOIN equipment_for_stage ON equipment_for_stage.id_stage = stage.id_stage " +
+                "JOIN equipment ON equipment.id_equipment = equipment_for_stage.id_equipment " +
+                "JOIN equipment_parameter_value ON equipment.id_equipment = equipment_parameter_value.id_equipment " +
+                "JOIN equipment_parameter ON equipment_parameter_value.id_equipment_parameter = equipment_parameter.id_equipment_parameter " +
+                "JOIN unit_measurement ON unit_measurement.id_unit_measurement = equipment_parameter.id_unit_measurement WHERE final_product.id_final_product = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+            int i = 0;
+            string mode = "";
+            string r1 = "";
+            string r2 = "";
+            string des1 = "";
+            string des2 = "";
+            while (sqlite_datareader.Read()) {
+                
+
+                if (i % 2 == 0) {
+                    if ((r1 == sqlite_datareader.GetString(0)) && (des1 == sqlite_datareader.GetString(1))) {
+                        i++;
+                        continue;
+                    }
+                    mode += sqlite_datareader.GetString(0) + " - " + sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ", ";
+                    r1 = sqlite_datareader.GetString(0);
+                    des1 = sqlite_datareader.GetString(1);
+                } else {
+                    if ((r2 == sqlite_datareader.GetString(0)) && (des2 == sqlite_datareader.GetString(1))) {
+                        i++;
+                        continue;
+                    }
+                    mode += sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ". ";
+                    r2 = sqlite_datareader.GetString(0);
+                    des2 = sqlite_datareader.GetString(1);
+                }
+                i++;
+                // equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+            return mode;
         }
     }
 }

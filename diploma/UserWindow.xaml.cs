@@ -245,6 +245,7 @@ namespace Diploma {
         public Func<ChartPoint, string> PointLabel { get; set; }
         public SeriesCollection SeriesCollectionConc { get; set; }
         Func<double, string> FormatFunc = (x) => string.Format("{0:0.0000}", x);
+        Func<double, string> FormatFuncX = (x) => string.Format("{0:0.00}", x);
 
         private void showTableButton_Click(object sender, RoutedEventArgs e) {
             TableWindow tableWindow = new TableWindow(_concentrations, _kineticComponents);
@@ -285,8 +286,8 @@ namespace Diploma {
             concChart.AxisX.Clear();
             concChart.AxisY.Clear();
             
-            concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 15 });
-            concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0 });
+            concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
+            concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
             PointLabel = chartPoint => $"{"Время контакта"}: {Math.Round(chartPoint.X, 4)}, {"Концентрация"}: {Math.Round(chartPoint.Y, 4)}";
             List<LineSeries> lines = new();
             SeriesCollectionConc = new SeriesCollection();
@@ -369,6 +370,9 @@ namespace Diploma {
            // area_label.Text = area;
             area_label.Content = area;
 
+            string modeReactor = _databaseWork.GetModes(marks[0]);
+            reactorModes_label.Content = modeReactor;
+
             string scheme = _databaseWork.GetSchemeFreon(marks[0]);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
 
@@ -440,8 +444,8 @@ namespace Diploma {
             } else if (selectedIndex == 1 && _isFirstEnterMath) {
                 _isFirstEnterMath = false;
                 FillTable();
-                concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 15 });
-                concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0 });
+                concChart.AxisX.Add(new Axis { Title = "Время контакта, с", LabelFormatter = FormatFuncX, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
+                concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
                 //concChart.AxisX.Clear();
                 //concChart.AxisY.Clear();
                 concChart.DataContext = this;
@@ -474,6 +478,9 @@ namespace Diploma {
             string area = _databaseWork.GetArea(mark);
             // area_label.Text = area;
             area_label.Content = area;
+
+            string modeReactor = _databaseWork.GetModes(mark);
+            reactorModes_label.Content = modeReactor;
 
             string scheme = _databaseWork.GetSchemeFreon(mark);
             scheme_image.Source = new BitmapImage(new Uri(scheme, UriKind.Relative));
@@ -591,6 +598,15 @@ namespace Diploma {
                 string path = "..\\..\\..\\schemes\\" + stageName + "_scheme_freon134a.png";
                 scheme_image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
                 // scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\1_scheme_freon134a.png", UriKind.Relative));
+            } else if (marks_ComboBox.SelectedIndex == 1) {
+                string path = "..\\..\\..\\schemes\\" + stageName + "_scheme_freon125.png";
+                scheme_image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
+            } else if (marks_ComboBox.SelectedIndex == 2) {
+                string path = "..\\..\\..\\schemes\\" + stageName + "_scheme_freon227ea.png";
+                scheme_image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
+            } else {
+                string path = "..\\..\\..\\schemes\\" + stageName + "_scheme_freon23.png";
+                scheme_image.Source = new BitmapImage(new Uri(path, UriKind.Relative));
             }
         }
 
@@ -598,6 +614,12 @@ namespace Diploma {
         private void scheme_image_MouseDown(object sender, MouseButtonEventArgs e) {
             if (marks_ComboBox.SelectedIndex == 0) {
                 scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\scheme_freon134a.png", UriKind.Relative));
+            } else if (marks_ComboBox.SelectedIndex == 1) {
+                scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\scheme_freon125.png", UriKind.Relative));
+            } else if (marks_ComboBox.SelectedIndex == 2) {
+                scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\scheme_freon227ea.png", UriKind.Relative));
+            } else {
+                scheme_image.Source = new BitmapImage(new Uri(@"..\..\..\schemes\scheme_freon23.png", UriKind.Relative));
             }
         }
 
