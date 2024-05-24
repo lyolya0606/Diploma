@@ -20,7 +20,7 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Center" Margin="0, 20, 0, 0">
-            <DataGrid x:Name="base_DataGrid" Height="320" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" SelectedCellsChanged="base_DataGrid_SelectedCellsChanged" SelectionChanged="base_DataGrid_SelectionChanged" Background="White" FontSize="14"/>
+            <DataGrid x:Name="base_DataGrid" Height="320" IsReadOnly="True" CanUserAddRows="False" CanUserDeleteRows="False" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" VerticalScrollBarVisibility="Visible" SelectedCellsChanged="base_DataGrid_SelectedCellsChanged" SelectionChanged="base_DataGrid_SelectionChanged" Background="White" FontSize="14" CanUserSortColumns="False"/>
         </StackPanel>
 
         <StackPanel Margin="0, 30, 0, 0" HorizontalAlignment="Right" Orientation="Horizontal">

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.Data;
+using System.Xml.Linq;
 
 namespace Diploma {
     public class DatabaseWork {
@@ -873,7 +874,7 @@ namespace Diploma {
                 "JOIN equipment ON equipment.id_equipment = equipment_for_stage.id_equipment " +
                 "JOIN equipment_parameter_value ON equipment.id_equipment = equipment_parameter_value.id_equipment " +
                 "JOIN equipment_parameter ON equipment_parameter_value.id_equipment_parameter = equipment_parameter.id_equipment_parameter " +
-                "JOIN unit_measurement ON unit_measurement.id_unit_measurement = equipment_parameter.id_unit_measurement WHERE final_product.id_final_product = @id";
+                "JOIN unit_measurement ON unit_measurement.id_unit_measurement = equipment_parameter.id_unit_measurement WHERE final_product.id_final_product = @id ";
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
             sqlite_datareader = sqlite_cmd.ExecuteReader();
             int i = 0;
@@ -883,30 +884,58 @@ namespace Diploma {
             string des1 = "";
             string des2 = "";
             while (sqlite_datareader.Read()) {
-                
+                if (sqlite_datareader.GetString(1) == "T" || sqlite_datareader.GetString(1) == "p") {
 
-                if (i % 2 == 0) {
-                    if ((r1 == sqlite_datareader.GetString(0)) && (des1 == sqlite_datareader.GetString(1))) {
-                        i++;
-                        continue;
+
+                    if (i % 2 == 0) {
+                        if ((r1 == sqlite_datareader.GetString(0)) && (des1 == sqlite_datareader.GetString(1))) {
+                            i++;
+                            continue;
+                        }
+                        mode += sqlite_datareader.GetString(0) + " - " + sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ", ";
+                        r1 = sqlite_datareader.GetString(0);
+                        des1 = sqlite_datareader.GetString(1);
+                    } else {
+                        if ((r2 == sqlite_datareader.GetString(0)) && (des2 == sqlite_datareader.GetString(1))) {
+                            i++;
+                            continue;
+                        }
+                        mode += sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ". ";
+                        r2 = sqlite_datareader.GetString(0);
+                        des2 = sqlite_datareader.GetString(1);
                     }
-                    mode += sqlite_datareader.GetString(0) + " - " + sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ", ";
-                    r1 = sqlite_datareader.GetString(0);
-                    des1 = sqlite_datareader.GetString(1);
-                } else {
-                    if ((r2 == sqlite_datareader.GetString(0)) && (des2 == sqlite_datareader.GetString(1))) {
-                        i++;
-                        continue;
-                    }
-                    mode += sqlite_datareader.GetString(1) + ": (" + sqlite_datareader.GetString(2) + ")" + sqlite_datareader.GetString(3) + ". ";
-                    r2 = sqlite_datareader.GetString(0);
-                    des2 = sqlite_datareader.GetString(1);
+                    i++;
                 }
-                i++;
                 // equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
             }
             sqlite_conn.Close();
             return mode;
+        }
+
+        public string GetReacorsParameters(string parameterName, string equipment) {
+            string parameter = "";
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT equipment_parameter.designation, equipment_parameter_value.value, unit_measurement.designation FROM equipment " +
+                "JOIN equipment_parameter_value ON equipment.id_equipment = equipment_parameter_value.id_equipment " +
+                "JOIN equipment_parameter ON equipment_parameter.id_equipment_parameter = equipment_parameter_value.id_equipment_parameter " +
+                "JOIN unit_measurement ON equipment_parameter.id_unit_measurement = unit_measurement.id_unit_measurement " +
+                "WHERE equipment.designation = @equipment AND equipment_parameter.name = @parameterName";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@equipment", equipment));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@parameterName", parameterName));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            while (sqlite_datareader.Read()) {
+                parameter += sqlite_datareader.GetString(0) + " " + sqlite_datareader.GetString(1) + sqlite_datareader.GetString(2);
+
+
+                // equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+            return parameter;
         }
     }
 }

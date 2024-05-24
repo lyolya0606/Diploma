@@ -574,6 +574,11 @@ namespace Diploma {
 
         }
 
+        private void reactorButton_Click(object sender, RoutedEventArgs e) {
+            ReactorWindow reactorWindow = new();
+            reactorWindow.ShowDialog();
+        }
+
         private void FillTableStage(List<Tuple<string, string>> equipmentStage) {
             SetUpColumnsStage();
             List<DataForTableStage> data = new();

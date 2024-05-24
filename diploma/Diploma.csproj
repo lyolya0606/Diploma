@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="freony-390x240.png" />
+    <None Remove="reactors.jpeg" />
     <None Remove="schemes\10_scheme_freon134a.png" />
     <None Remove="schemes\11_scheme_freon134a.png" />
     <None Remove="schemes\1_scheme_freon125.png" />
@@ -49,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="reactors.jpeg" />
     <Resource Include="schemes\6_scheme_freon23.png" />
   </ItemGroup>
 

@@ -1,0 +1,18 @@
+﻿<Window x:Class="Diploma.ReactorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Diploma"
+        mc:Ignorable="d"
+        FontFamily="{StaticResource Inter}"
+        Title="Характеристики реакторов" Height="430" Width="500"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <Image Source="/reactors.jpeg" VerticalAlignment="Center" HorizontalAlignment="Center" Width="450"/>
+        <Label Content="Характеристики реакторов" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label x:Name="first_Label" FontSize="16" />
+        <Label x:Name="second_Label" FontSize="16" />
+    </StackPanel>
+</Window>
