@@ -58,7 +58,7 @@ namespace Diploma {
                 if (_table == "Готовая продукция") {
 
                     try {
-                        databaseWork.UpdateFinalProduct(_id, first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                        databaseWork.UpdateFinalProduct(_id, first_TextBox.Text, second_TextBox.Text, third_TextBox.Text, fourth_TextBox.Text);
                     } catch (Exception) {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;
@@ -117,6 +117,22 @@ namespace Diploma {
 
                     try {
                         databaseWork.UpdateUnit(_id, first_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Параметр оборудования") {
+
+                    try {
+                        databaseWork.UpdateEquipmentParameter(_id, first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Значение параметра оборудования") {
+
+                    try {
+                        databaseWork.UpdateEquipmentParameterValue(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
                     } catch (Exception) {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;
@@ -182,6 +198,22 @@ namespace Diploma {
 
                     try {
                         databaseWork.InsertUnit(first_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Параметр оборудования") {
+
+                    try {
+                        databaseWork.InsertEquipmentParameter(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Значение параметра оборудования") {
+
+                    try {
+                        databaseWork.InsertEquipmentParameterValue(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
                     } catch (Exception) {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;

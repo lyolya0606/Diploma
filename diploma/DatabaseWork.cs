@@ -534,18 +534,66 @@ namespace Diploma {
 
         }
 
-        public void UpdateFinalProduct(string id, string name, string designation, string area) {
+        public List<List<string>> GetTableEquipmentParameter() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM equipment_parameter";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetString(2), sqlite_datareader.GetString(3) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public List<List<string>> GetTableEquipmentParameterValue() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM equipment_parameter_value";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetInt32(1).ToString(), sqlite_datareader.GetString(2) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+        public void UpdateFinalProduct(string id, string idChem, string name, string designation, string area) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
             SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
             sqlite_conn.Open();
             sqlite_cmd = sqlite_conn.CreateCommand();
-            sqlite_cmd.CommandText = "UPDATE final_product SET name = @name, designation = @designation, " +
+            sqlite_cmd.CommandText = "UPDATE final_product SET id_chemical_formula = @idChem, name = @name, designation = @designation, " +
                 "application_area = @area WHERE id_final_product = @id";
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@area", area));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idChem", idChem));
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
         }
@@ -605,6 +653,21 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void UpdateEquipmentParameter(string id, string idUnit, string name, string des) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE equipment_parameter SET id_unit_measurement = @idUnit, name = @name, designation = @des WHERE id_equipment_parameter = @id AND id_stage = @idStage";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idUnit", idUnit));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@des", des));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
         public void UpdateKinetic(string id, string idUnit, string name, string designation) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
@@ -635,6 +698,20 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void UpdateEquipmentParameterValue(string id, string idEquip, string value) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE equipment_parameter_value SET value = @value WHERE id_equipment_parameter = @id AND id_equipment = @idEquip";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@value", value));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idEquip", idEquip));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
         public void UpdateUnit(string id, string designation) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
@@ -660,6 +737,21 @@ namespace Diploma {
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@area", area));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertEquipmentParameter(string idUnit, string name, string designation) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO equipment_parameter (id_unit_measurement, name, designation) " +
+                                $"VALUES (@idUnit, @name, @designation)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idUnit", idUnit));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@name", name));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@designation", designation));
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
         }
@@ -748,6 +840,21 @@ namespace Diploma {
             sqlite_conn.Close();
         }
 
+        public void InsertEquipmentParameterValue(string id, string idEquip, string value) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO equipment_parameter_value (id_equipment_parameter, id_equipment, value) " +
+                                $"VALUES (@id, @idEquip, @value)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idEquip", idEquip));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@value", value));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
         public void InsertUnit(string designation) {
             //SQLiteDataReader sqlite_datareader;
             SQLiteCommand sqlite_cmd;
@@ -770,6 +877,19 @@ namespace Diploma {
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
         }
+
+        public void DeleteEquipmentParameter(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM equipment_parameter WHERE id_equipment_parameter = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
 
         public void DeleteChemic(string id) {
             //SQLiteDataReader sqlite_datareader;
@@ -842,6 +962,19 @@ namespace Diploma {
             sqlite_cmd.CommandText = "DELETE FROM kinetic_parameter_value WHERE id_final_product = @idProd AND id_kinetic_parameter = @id";
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
             sqlite_cmd.Parameters.Add(new SQLiteParameter("@idProd", idProd));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteEquipmentParameterValue(string id, string idEquip) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM equipment_parameter_value WHERE id_equipment_parameter = @id AND id_equipment = @idEquip";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@idEquip", idEquip));
             sqlite_cmd.ExecuteNonQuery();
             sqlite_conn.Close();
         }

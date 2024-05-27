@@ -69,6 +69,37 @@ namespace Diploma {
             public required string Area { get; set; }
         }
 
+        private void SetUpColumnsEquipmentParameter() {
+            var column = new DataGridTextColumn {
+                Header = "Номер",
+                Binding = new Binding("ID")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Номер единицы измерения",
+                Binding = new Binding("IDUnit")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Название",
+                Binding = new Binding("Name")
+            };
+            base_DataGrid.Columns.Add(column);
+
+            column = new DataGridTextColumn {
+                Header = "Значение",
+                Binding = new Binding("Designation")
+            };
+            base_DataGrid.Columns.Add(column);
+        }
+
+        private record DataForEquipmentParameter {
+            public required string ID { get; set; }
+            public required string IDUnit { get; set; }
+            public required string Name { get; set; }
+            public required string Designation { get; set; }
+        }
+
         private void SetUpColumnsEquipment() {
             var column = new DataGridTextColumn {
                 Header = "Номер",
@@ -236,6 +267,30 @@ namespace Diploma {
             public required string Designation { get; set; }
         }
 
+        private void SetUpColumnsEquipmentParameterValue() {
+            var column = new DataGridTextColumn {
+                Header = "Номер параметра оборудования",
+                Binding = new Binding("ID")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Номер оборудования",
+                Binding = new Binding("IDEquip")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Значение",
+                Binding = new Binding("Value")
+            };
+            base_DataGrid.Columns.Add(column);
+        }
+
+        private record DataForEquipmentParameterValue {
+            public required string ID { get; set; }
+            public required string IDEquip { get; set; }
+            public required string Value { get; set; }
+        }
+
         private void FirstEnter() {
             isFirstEnter = true;
             _databaseWork = new DatabaseWork();
@@ -248,6 +303,8 @@ namespace Diploma {
             tables_ComboBox.Items.Add("Кинетический параметр");
             tables_ComboBox.Items.Add("Значение кинетического параметра");
             tables_ComboBox.Items.Add("Единица измерения");
+            tables_ComboBox.Items.Add("Параметр оборудования");
+            tables_ComboBox.Items.Add("Значение параметра оборудования");
 
             tables_ComboBox.SelectedIndex = 0;
 
@@ -399,6 +456,31 @@ namespace Diploma {
                 currentName = name?.Text;
 
                 currentTable = "Единица измерения";
+            } else if (table == "Параметр оборудования") {
+                TextBlock? id = base_DataGrid.Columns[0].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentID = id?.Text;
+
+                TextBlock? idStage = base_DataGrid.Columns[1].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentIDStage = idStage?.Text;
+
+                TextBlock? name = base_DataGrid.Columns[2].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentName = name?.Text;
+
+                TextBlock? des = base_DataGrid.Columns[3].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentDesignation = des?.Text;
+
+                currentTable = "Параметр оборудования";
+            } else if (table == "Значение параметра оборудования") {
+                TextBlock? id = base_DataGrid.Columns[0].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentID = id?.Text;
+
+                TextBlock? idStage = base_DataGrid.Columns[1].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentIDStage = idStage?.Text;
+
+                TextBlock? val = base_DataGrid.Columns[2].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentValue = val?.Text;
+
+                currentTable = "Значение параметра оборудования";
             }
 
 
@@ -479,6 +561,24 @@ namespace Diploma {
                 second.Add("");
                 third.Add("");
                 third.Add("");
+                fourth.Add("");
+                fourth.Add("");
+            } else if (currentTable == "Параметр оборудования") {
+                first.Add("Номер единицы измерения");
+                first.Add(currentID);
+                second.Add("Название");
+                second.Add(currentName);
+                third.Add("Обозначение");
+                third.Add(currentDesignation);
+                fourth.Add("");
+                fourth.Add("");
+            } else if (currentTable == "Значение параметра оборудования") {
+                first.Add("Номер параметра оборудования");
+                first.Add(currentID);
+                second.Add("Номер оборудования");
+                second.Add(currentIDStage);
+                third.Add("Значение");
+                third.Add(currentValue);
                 fourth.Add("");
                 fourth.Add("");
             }
@@ -569,6 +669,24 @@ namespace Diploma {
                 third.Add("");
                 fourth.Add("");
                 fourth.Add("");
+            } else if (table == "Параметр оборудования") {
+                first.Add("Номер единицы измерения");
+                first.Add("");
+                second.Add("Название");
+                second.Add("");
+                third.Add("Обозначение");
+                third.Add("");
+                fourth.Add("");
+                fourth.Add("");
+            } else if (table == "Значение параметра оборудования") {
+                first.Add("Номер параметра оборудования");
+                first.Add("");
+                second.Add("Номер оборудования");
+                second.Add("");
+                third.Add("Значение");
+                third.Add("");
+                fourth.Add("");
+                fourth.Add("");
             }
 
             AddAndEditWindow addAndEditWindow = new AddAndEditWindow(table, false, currentID, first, second, third, fourth);
@@ -653,6 +771,24 @@ namespace Diploma {
                 } else {
                     return;
                 }
+            } else if (currentTable == "Параметр оборудования") {
+                MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить запись из таблицы Параметр оборудования: " +
+                     $"{currentName}?", "Удаление записи", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes) {
+                    _databaseWork.DeleteEquipmentParameter(currentID);
+                } else {
+                    return;
+                }
+            } else if (currentTable == "Значение параметра оборудования") {
+                MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить запись из таблицы Значение параметра оборудования: " +
+                     $"{currentID} - {currentIDStage}?", "Удаление записи", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes) {
+                    _databaseWork.DeleteEquipmentParameterValue(currentID, currentIDStage);
+                } else {
+                    return;
+                }
             }
 
             FillAfterUpdate(currentTable);
@@ -695,6 +831,14 @@ namespace Diploma {
                 List<List<string>> dt = _databaseWork.GetTableUnit();
                 base_DataGrid.SelectedIndex = -1;
                 FillUnit(dt);
+            } else if (table == "Параметр оборудования") {
+                List<List<string>> dt = _databaseWork.GetTableEquipmentParameter();
+                base_DataGrid.SelectedIndex = -1;
+                FillEquipmentParameter(dt);
+            } else if (table == "Значение параметра оборудования") {
+                List<List<string>> dt = _databaseWork.GetTableEquipmentParameterValue();
+                base_DataGrid.SelectedIndex = -1;
+                FillEquipmentParameterValue(dt);
             }
         }
 
@@ -712,6 +856,20 @@ namespace Diploma {
 
             base_DataGrid.ItemsSource = data;
         }
+        private void FillEquipmentParameter(List<List<string>> dt) {
+            SetUpColumnsEquipmentParameter();
+            List<DataForEquipmentParameter> data = new();
+            for (int i = 0; i < dt.Count; i++) {
+                data.Add(new DataForEquipmentParameter {
+                    ID = dt[i][0],
+                    IDUnit = dt[i][1],
+                    Name = dt[i][2],
+                    Designation = dt[i][3]
+                });
+            }
+
+            base_DataGrid.ItemsSource = data;
+        }
 
         private void FillKineticValue(List<List<string>> dt) {
             SetUpColumnsKineticValue();
@@ -720,6 +878,20 @@ namespace Diploma {
                 data.Add(new DataForKineticValue {
                     ID = dt[i][0],
                     IDProd = dt[i][1],
+                    Value = dt[i][2]
+                });
+            }
+
+            base_DataGrid.ItemsSource = data;
+        }
+
+        private void FillEquipmentParameterValue(List<List<string>> dt) {
+            SetUpColumnsEquipmentParameterValue();
+            List<DataForEquipmentParameterValue> data = new();
+            for (int i = 0; i < dt.Count; i++) {
+                data.Add(new DataForEquipmentParameterValue {
+                    ID = dt[i][0],
+                    IDEquip = dt[i][1],
                     Value = dt[i][2]
                 });
             }

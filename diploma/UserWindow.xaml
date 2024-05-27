@@ -125,7 +125,7 @@
                                 <wpf:CartesianChart x:Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1078"/>
                             </StackPanel>
 
-                            <StackPanel Margin="0, 20, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Margin="0, 25, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
                                     <Label FontSize="14" FontWeight="Bold" VerticalContentAlignment="Center" Content="Время контакта, с" Height="33" Width="140" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBox x:Name="timeTextBox" PreviewTextInput="NumberValidationTextBox" VerticalContentAlignment="Center" Height="33" FontSize="14" Width="100" Margin="10, 0, 0, 0" HorizontalAlignment="Left" VerticalAlignment="Center" BorderBrush="Black" Text="10" TextAlignment="Center"/>

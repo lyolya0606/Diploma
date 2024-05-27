@@ -210,9 +210,12 @@ namespace Diploma {
 
 
             await Task.Run(() => {
-                PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method, _kineticMatrix);
-                //PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
-                _concentrations = pythonMathModel.RunScript();
+                //PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method, _kineticMatrix);
+                ////PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
+                //_concentrations = pythonMathModel.RunScript();
+                PythonMathExe pythonMathExe = new(startConcentrations, _aValues, _eValues, temperature, contactTime, _kineticMatrix);
+                pythonMathExe.PythonWork();
+                _concentrations = pythonMathExe.GetPythonOutput();
 
             });
             
@@ -286,8 +289,8 @@ namespace Diploma {
             concChart.AxisX.Clear();
             concChart.AxisY.Clear();
             
-            concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
-            concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
+            concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
+            concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
             PointLabel = chartPoint => $"{"Время контакта"}: {Math.Round(chartPoint.X, 4)}, {"Концентрация"}: {Math.Round(chartPoint.Y, 4)}";
             List<LineSeries> lines = new();
             SeriesCollectionConc = new SeriesCollection();
@@ -444,8 +447,8 @@ namespace Diploma {
             } else if (selectedIndex == 1 && _isFirstEnterMath) {
                 _isFirstEnterMath = false;
                 FillTable();
-                concChart.AxisX.Add(new Axis { Title = "Время контакта, с", LabelFormatter = FormatFuncX, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
-                concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 15, MinValue = 0, Foreground = Brushes.Black });
+                concChart.AxisX.Add(new Axis { Title = "Время контакта, с", LabelFormatter = FormatFuncX, FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
+                concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
                 //concChart.AxisX.Clear();
                 //concChart.AxisY.Clear();
                 concChart.DataContext = this;

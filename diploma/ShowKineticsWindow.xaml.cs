@@ -42,6 +42,14 @@ namespace Diploma {
             InitializeComponent();
 
             FillTable();
+            FillMatrixTable();
+            component_ComboBox.Items.Clear();
+            //Kinetic kinetic = new(_reactions);
+            //List<string> elements = kinetic.GetAllElements();
+            foreach (string el in elements) {
+                component_ComboBox.Items.Add(el);
+            }
+            component_ComboBox.SelectedIndex = _mainProductIndex;
             //foreach (string el in elements) {
             //    component_ComboBox.Items.Add(el);
             //}

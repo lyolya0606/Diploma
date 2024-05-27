@@ -292,27 +292,27 @@ namespace Diploma {
 
 
 
-            List<List<double>> transposedMatrix = new List<List<double>>();
+            List<List<string>> transposedMatrix = new();
 
 
             for (int col = 0; col < _concentrations[0].Count; col++) {
   
-                List<double> transposedRow = new List<double>();
+                List<string> transposedRow = new();
 
   
                 for (int row = 0; row < _concentrations.Count; row++) {
-                    transposedRow.Add(_concentrations[row][col]);
+                    transposedRow.Add(string.Format("{0:00.##E+00}", _concentrations[row][col]));
                 }
 
 
                 transposedMatrix.Add(transposedRow);
             }
 
-            ObservableCollection<ObservableCollection<double>> dataGridSource = new ObservableCollection<ObservableCollection<double>>();
+            ObservableCollection<ObservableCollection<string>> dataGridSource = new ObservableCollection<ObservableCollection<string>>();
 
 
-            foreach (List<double> row in transposedMatrix) {
-                ObservableCollection<double> observableRow = new ObservableCollection<double>(row);
+            foreach (List<string> row in transposedMatrix) {
+                ObservableCollection<string> observableRow = new ObservableCollection<string>(row);
                 dataGridSource.Add(observableRow);
             }
             _components.Insert(0, "Время контакта");
