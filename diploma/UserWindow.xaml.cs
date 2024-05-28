@@ -211,7 +211,7 @@ namespace Diploma {
 
             await Task.Run(() => {
                 //PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method, _kineticMatrix);
-                ////PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
+                //PythonMathModel pythonMathModel = new PythonMathModel(startConcentrations, _aValues, _eValues, temperature, contactTime, _method);
                 //_concentrations = pythonMathModel.RunScript();
                 PythonMathExe pythonMathExe = new(startConcentrations, _aValues, _eValues, temperature, contactTime, _kineticMatrix);
                 pythonMathExe.PythonWork();

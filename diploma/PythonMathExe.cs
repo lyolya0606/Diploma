@@ -32,10 +32,13 @@ namespace Diploma {
         }
 
         private List<string> MakeArgs() {
+            NumberFormatInfo format = new NumberFormatInfo();
+            format.NumberGroupSeparator = ".";
             List<string> args = new();
             args.Add("-c");
             foreach (var conc in _startConcentration) {
                 args.Add(conc.ToString());
+                
             }
 
             args.Add("-m");
@@ -71,10 +74,12 @@ namespace Diploma {
 
         public void PythonWork() {
             List<string> args = MakeArgs();
+
             DateTime startTime = DateTime.Now;
             var process = new Process();
 
             process.StartInfo.FileName = @"..\..\..\ImportantFiles\math_model_python.exe";
+            //process.StartInfo.FileName = @"C:\Users\lyolya\source\repos\Diploma\diploma\ImportantFiles\math_model_python.exe";
 
             process.StartInfo.Arguments = String.Join(" ", args);
 
@@ -91,7 +96,7 @@ namespace Diploma {
             string YF = string.Empty;
             YF = process.StandardOutput.ReadLine();
             //process.StandardInput.Write(Keys.Enter);
-            process.WaitForExit();
+         // process.WaitForExit();
             //resultsForTestFact.Add(YF);
             DateTime endTime = DateTime.Now;
             TimeSpan elapsed = endTime - startTime;
