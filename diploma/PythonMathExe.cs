@@ -96,7 +96,7 @@ namespace Diploma {
             string YF = string.Empty;
             YF = process.StandardOutput.ReadLine();
             //process.StandardInput.Write(Keys.Enter);
-         // process.WaitForExit();
+            process.WaitForExit();
             //resultsForTestFact.Add(YF);
             DateTime endTime = DateTime.Now;
             TimeSpan elapsed = endTime - startTime;
