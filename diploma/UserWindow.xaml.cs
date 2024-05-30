@@ -137,28 +137,28 @@ namespace Diploma {
             SetUpColumns();
             List<DataForTable> data = new();
 
-            data.Add(new DataForTable { Element = "CCl" + '\u2082' + "=CClH", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "CCl" + '\u2082' + "=CClH", Concentration = 0.00035 });
             data.Add(new DataForTable { Element = "HF", Concentration = 0.01493 });
-            data.Add(new DataForTable { Element = "CrF" + '\u2083', Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CFCl" + '\u2082' + "-CClH" + '\u2082', Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CFCl=CClH", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "CrF" + '\u2083', Concentration = 0.00076 });
+            data.Add(new DataForTable { Element = "[CCl" + '\u2082' + "=CClH * HF * CrF" + '\u2083' + "]", Concentration = 0 });
+            data.Add(new DataForTable { Element = "CFCl" + '\u2082' + "-CClH" + '\u2082', Concentration = 0 });
+            data.Add(new DataForTable { Element = "CFCl=CClH", Concentration = 0 });
             data.Add(new DataForTable { Element = "HCl", Concentration = 0.000007 });
-            data.Add(new DataForTable { Element = "[CFCl" + '\u2082' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "[CFCl=CClH * HF * CrF" + '\u2083' + "]", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CF" + '\u2082' + "Cl-CClH" + '\u2082', Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CrF" + '\u2082' + "Cl", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CCl" + '\u2083' + "-CClH" + '\u2082', Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "[CCl" + '\u2083' + "-CClH" + '\u2082' +  " * CrF" + '\u2083' + "]", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "[CFCl" + '\u2082' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0 });
+            data.Add(new DataForTable { Element = "[CFCl=CClH * HF * CrF" + '\u2083' + "]", Concentration = 0 });
+            data.Add(new DataForTable { Element = "CF" + '\u2082' + "Cl-CClH" + '\u2082', Concentration = 0 });
+            data.Add(new DataForTable { Element = "CrF" + '\u2082' + "Cl", Concentration = 0 });
+            data.Add(new DataForTable { Element = "CCl" + '\u2083' + "-CClH" + '\u2082', Concentration = 0 });
+            data.Add(new DataForTable { Element = "[CCl" + '\u2083' + "-CClH" + '\u2082' +  " * CrF" + '\u2083' + "]", Concentration = 0 });
+            data.Add(new DataForTable { Element = "[CF" + '\u2082' + "Cl-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0 });
             data.Add(new DataForTable { Element = "CF" + '\u2082' + "=CClH", Concentration = 0.00001 });
-            data.Add(new DataForTable { Element = "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF" + '\u2083' + "]", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "[CF" + '\u2082' + "=CClH" + '\u2082' + " * HF * CrF" + '\u2083' + "]", Concentration = 0 });
             data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CClH" + '\u2082', Concentration = 0.003733 });
             data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CFH" + '\u2082', Concentration = 0 });
-            data.Add(new DataForTable { Element = "[2CF" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "[2CF" + '\u2083' + "-CClH" + '\u2082' + " * CrF" + '\u2083' + "]", Concentration = 0 });
             data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CH" + '\u2083', Concentration = 0.00003 });
-            data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CCl" + '\u2082' + "H", Concentration = 0.01 });
-            data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CFClH", Concentration = 0.01 });
+            data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CCl" + '\u2082' + "H", Concentration = 0 });
+            data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CFClH", Concentration = 0 });
             data.Add(new DataForTable { Element = "CF" + '\u2083' + "-CF" + '\u2082' + "H", Concentration = 0.0000053 });
             concDataGrid.ItemsSource = data;
         }
@@ -247,7 +247,7 @@ namespace Diploma {
 
         public Func<ChartPoint, string> PointLabel { get; set; }
         public SeriesCollection SeriesCollectionConc { get; set; }
-        Func<double, string> FormatFunc = (x) => string.Format("{0:0.0000}", x);
+        Func<double, string> FormatFunc = (x) => string.Format("{0:0.000000}", x);
         Func<double, string> FormatFuncX = (x) => string.Format("{0:0.00}", x);
 
         private void showTableButton_Click(object sender, RoutedEventArgs e) {
@@ -291,7 +291,7 @@ namespace Diploma {
             
             concChart.AxisX.Add(new Axis { Title = "Время контакта, с", FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
             concChart.AxisY.Add(new Axis { Title = "Концентрация, моль/л", LabelFormatter = FormatFunc, FontSize = 16, MinValue = 0, Foreground = Brushes.Black });
-            PointLabel = chartPoint => $"{"Время контакта"}: {Math.Round(chartPoint.X, 4)}, {"Концентрация"}: {Math.Round(chartPoint.Y, 4)}";
+            PointLabel = chartPoint => $"{"Время контакта"}: {Math.Round(chartPoint.X, 4)}, {"Концентрация"}: {Math.Round(chartPoint.Y, 6)}";
             List<LineSeries> lines = new();
             SeriesCollectionConc = new SeriesCollection();
             int color = 0;

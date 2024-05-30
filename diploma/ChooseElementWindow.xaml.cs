@@ -28,6 +28,7 @@ namespace Diploma {
             InitializeComponent();
             _chosenElements = chosenElements;
             _components = components;
+            //_components.RemoveAt(0);
             FillCheckBoxes();
  
 
