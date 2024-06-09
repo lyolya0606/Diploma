@@ -267,6 +267,30 @@ namespace Diploma {
             public required string Designation { get; set; }
         }
 
+        private void SetUpColumnsUser() {
+            var column = new DataGridTextColumn {
+                Header = "Номер",
+                Binding = new Binding("ID")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Логин",
+                Binding = new Binding("Login")
+            };
+            base_DataGrid.Columns.Add(column);
+            column = new DataGridTextColumn {
+                Header = "Пароль",
+                Binding = new Binding("Password")
+            };
+            base_DataGrid.Columns.Add(column);
+        }
+
+        private record DataForUser {
+            public required string ID { get; set; }
+            public required string Login { get; set; }
+            public required string Password { get; set; }
+        }
+
         private void SetUpColumnsEquipmentParameterValue() {
             var column = new DataGridTextColumn {
                 Header = "Номер параметра оборудования",
@@ -305,6 +329,7 @@ namespace Diploma {
             tables_ComboBox.Items.Add("Единица измерения");
             tables_ComboBox.Items.Add("Параметр оборудования");
             tables_ComboBox.Items.Add("Значение параметра оборудования");
+            tables_ComboBox.Items.Add("Пользователь");
 
             tables_ComboBox.SelectedIndex = 0;
 
@@ -481,6 +506,17 @@ namespace Diploma {
                 currentValue = val?.Text;
 
                 currentTable = "Значение параметра оборудования";
+            } else if (table == "Пользователь") {
+                TextBlock? id = base_DataGrid.Columns[0].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentID = id?.Text;
+
+                TextBlock? name = base_DataGrid.Columns[1].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentName = name?.Text;
+
+                TextBlock? des = base_DataGrid.Columns[2].GetCellContent(base_DataGrid.Items[selectedRow]) as TextBlock;
+                currentDesignation = des?.Text;
+
+                currentTable = "Пользователь";
             }
 
 
@@ -579,6 +615,15 @@ namespace Diploma {
                 second.Add(currentIDStage);
                 third.Add("Значение");
                 third.Add(currentValue);
+                fourth.Add("");
+                fourth.Add("");
+            } else if (currentTable == "Пользователь") {
+                first.Add("Логин");
+                first.Add(currentName);
+                second.Add("Пароль");
+                second.Add(currentDesignation);
+                third.Add("");
+                third.Add("");
                 fourth.Add("");
                 fourth.Add("");
             }
@@ -687,6 +732,15 @@ namespace Diploma {
                 third.Add("");
                 fourth.Add("");
                 fourth.Add("");
+            } else if (table == "Пользователь") {
+                first.Add("Логин");
+                first.Add("");
+                second.Add("Пароль");
+                second.Add("");
+                third.Add("");
+                third.Add("");
+                fourth.Add("");
+                fourth.Add("");
             }
 
             AddAndEditWindow addAndEditWindow = new AddAndEditWindow(table, false, currentID, first, second, third, fourth);
@@ -789,6 +843,15 @@ namespace Diploma {
                 } else {
                     return;
                 }
+            } else if (currentTable == "Пользователь") {
+                MessageBoxResult result = MessageBox.Show($"Вы действительно хотите удалить запись из таблицы Пользователь: " +
+                     $"{currentName}?", "Удаление записи", MessageBoxButton.YesNo);
+
+                if (result == MessageBoxResult.Yes) {
+                    _databaseWork.DeleteUser(currentID);
+                } else {
+                    return;
+                }
             }
 
             FillAfterUpdate(currentTable);
@@ -839,6 +902,10 @@ namespace Diploma {
                 List<List<string>> dt = _databaseWork.GetTableEquipmentParameterValue();
                 base_DataGrid.SelectedIndex = -1;
                 FillEquipmentParameterValue(dt);
+            } else if (table == "Пользователь") {
+                List<List<string>> dt = _databaseWork.GetTableUser();
+                base_DataGrid.SelectedIndex = -1;
+                FillUser(dt);
             }
         }
 
@@ -963,6 +1030,20 @@ namespace Diploma {
                 data.Add(new DataForUnit {
                     ID = dt[i][0],
                     Designation = dt[i][1]
+                });
+            }
+
+            base_DataGrid.ItemsSource = data;
+        }
+
+        private void FillUser(List<List<string>> dt) {
+            SetUpColumnsUser();
+            List<DataForUser> data = new();
+            for (int i = 0; i < dt.Count; i++) {
+                data.Add(new DataForUser {
+                    ID = dt[i][0],
+                    Login = dt[i][1],
+                    Password = dt[i][2],
                 });
             }
 

@@ -233,7 +233,7 @@ namespace Diploma {
             calculateButton.Content = "Рассчитать";
             showTableButton.IsEnabled = true;
 
-            finishConcLabel.Content = Math.Round(_concentrations[_mainProductIndex + 1][_concentrations[_mainProductIndex + 1].Count - 1], 4);
+            finishConcLabel.Content = Math.Round(_concentrations[_mainProductIndex + 1][_concentrations[_mainProductIndex + 1].Count - 1], 6);
             progressBar.IsIndeterminate = false;
             progressBar.Value = 0;
 

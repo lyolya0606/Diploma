@@ -50,6 +50,16 @@ namespace Diploma {
 
             fourth_Label.Content = _fourthLabel[0];
             fourth_TextBox.Text = _fourthLabel[1];
+
+            if (second_Label.Content == "") {
+                second_TextBox.IsEnabled = false;
+            }
+            if (third_Label.Content == "") {
+                third_TextBox.IsEnabled = false;
+            }
+            if (fourth_Label.Content == "") {
+                fourth_TextBox.IsEnabled = false;
+            }
         }
 
         private void OK_Button_Click(object sender, RoutedEventArgs e) {
@@ -137,6 +147,15 @@ namespace Diploma {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;
                     }
+                } else if (_table == "Пользователь") {
+
+                    try {
+                        databaseWork.UpdateUser(_id, first_TextBox.Text, second_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+
                 }
 
             } else {
@@ -214,6 +233,14 @@ namespace Diploma {
 
                     try {
                         databaseWork.InsertEquipmentParameterValue(first_TextBox.Text, second_TextBox.Text, third_TextBox.Text);
+                    } catch (Exception) {
+                        MessageBox.Show("Ошибка запроса", "Ошибка!");
+                        return;
+                    }
+                } else if (_table == "Пользователь") {
+
+                    try {
+                        databaseWork.InsertUser(first_TextBox.Text, second_TextBox.Text);
                     } catch (Exception) {
                         MessageBox.Show("Ошибка запроса", "Ошибка!");
                         return;

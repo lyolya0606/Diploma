@@ -13,6 +13,7 @@ namespace Diploma {
 
         private SQLiteConnection _sqlite_conn;
         private string _pathToDB = @"Data Source=..\..\..\ImportantFiles\databaseDiploma.db";
+        private string _pathToDBUsers = @"Data Source=..\..\..\ImportantFiles\databaseUsers.db";
         public DatabaseWork() {
    
         }
@@ -1069,6 +1070,109 @@ namespace Diploma {
             }
             sqlite_conn.Close();
             return parameter;
+        }
+
+
+        public List<string> GetLogins() {
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDBUsers);
+            sqlite_conn.Open();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT login FROM user";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<string> values = new();
+            while (sqlite_datareader.Read()) {
+                values.Add(sqlite_datareader.GetString(0));
+
+            }
+            sqlite_conn.Close();
+
+            return values;
+        }
+
+        public string GetPassword(string login) {
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDBUsers);
+            sqlite_conn.Open();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT password FROM user WHERE login = @login";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@login", login));
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            string password = "";
+            while (sqlite_datareader.Read()) {
+                password = sqlite_datareader.GetString(0);
+
+            }
+            sqlite_conn.Close();
+
+            return password;
+        }
+
+        public List<List<string>> GetTableUser() {
+            //DataTable dt = new DataTable();
+            SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDBUsers);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "SELECT * FROM user";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+            List<List<string>> table = new List<List<string>>();
+            while (sqlite_datareader.Read()) {
+                List<string> row = new List<string> { sqlite_datareader.GetInt32(0).ToString(), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2) };
+
+                table.Add(row);
+
+                //equipment.Add(new Tuple<string, string>(sqlite_datareader.GetString(0), sqlite_datareader.GetString(1)));
+            }
+            sqlite_conn.Close();
+
+            return table;
+
+        }
+
+        public void UpdateUser(string id, string login, string password) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDB);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "UPDATE user SET login = @login, password = @password WHERE id_stage = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@password", password));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@login", login));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void InsertUser(string login, string password) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDBUsers);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "INSERT INTO user (login, password) VALUES (@login, @password)";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@password", password));
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@login", login));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
+        }
+
+        public void DeleteUser(string id) {
+            //SQLiteDataReader sqlite_datareader;
+            SQLiteCommand sqlite_cmd;
+            SQLiteConnection sqlite_conn = new SQLiteConnection(_pathToDBUsers);
+            sqlite_conn.Open();
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            sqlite_cmd.CommandText = "DELETE FROM user WHERE id_user = @id";
+            sqlite_cmd.Parameters.Add(new SQLiteParameter("@id", id));
+            sqlite_cmd.ExecuteNonQuery();
+            sqlite_conn.Close();
         }
     }
 }

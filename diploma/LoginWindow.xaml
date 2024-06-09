@@ -14,8 +14,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Label Content="Логин" FontSize="14" FontWeight="Bold" FontFamily="Inter Medium" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Width="64"/>
             <ComboBox x:Name="loginComboBox" Margin="40,0,0,0" FontSize="14" FontFamily="Inter Medium" VerticalContentAlignment="Center" Height="22" VerticalAlignment="Center" HorizontalAlignment="Left" Width="223" SelectedIndex="0" BorderBrush="White" Background="White">
-                <ComboBoxItem Content="user"/>
-                <ComboBoxItem Content="admin"/>
+                <!--<ComboBoxItem Content="user"/>
+                <ComboBoxItem Content="admin"/>-->
             </ComboBox>
         </StackPanel>
 
@@ -24,7 +24,9 @@
             <PasswordBox x:Name="passwordTextBox" Margin="40,0,0,0" FontSize="14" FontFamily="Inter Medium" VerticalContentAlignment="Center" Height="22" VerticalAlignment="Center" HorizontalAlignment="Left" Width="223" Password="user"/>
         </StackPanel>
 
-        <Button x:Name="loginButton" Content="Войти" Margin="0,40,0,33" RenderTransformOrigin="0.5,0.5" FontSize="14" FontFamily="Inter Medium" Height="34" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="96" FontWeight="Bold" Background="White" Click="loginButton_Click"/>
-
+        <StackPanel Margin="0, 30, 0, 0">
+            <Button x:Name="loginButton" Content="Войти"  RenderTransformOrigin="0.5,0.5" FontSize="14" FontFamily="Inter Medium" Height="34" VerticalAlignment="Bottom" HorizontalAlignment="Center" Width="96" FontWeight="Bold" Background="White" Click="loginButton_Click"/>
+            <Label x:Name="error_Label" Margin="0, 5, 0, 0" FontSize="14" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
     </StackPanel>
 </Window>
