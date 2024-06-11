@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Diploma"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Таблица значений концентраций" Height="750" Width="1500"
+        Title="Таблица значений концентраций" Height="750" Width="1400"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <Grid Margin="10, 10, 10, 10">

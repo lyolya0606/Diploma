@@ -7,7 +7,7 @@
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="800" Width="1500"
+        Title="Информационная система выбора оборудования для производства озонобезопасных хладонов" Height="800" Width="1400"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Icon="/freony-390x240.png">
     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 0">
@@ -113,16 +113,16 @@
                             </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0">
+                        <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" Width="1005">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Margin="0, 10, 100, 0" x:Name="reactorButton" Background="White" FontSize="14" Height="32" Width="209" FontWeight="Bold" Content="Характеристики реакторов" Click="reactorButton_Click"/>
-                                <Button Margin="0, 10, 100, 0" x:Name="kineticsButton" Background="White" FontSize="14" Height="32" Width="209" FontWeight="Bold" Content="Кинетические параметры" Click="kineticsButton_Click"/>
+                                <Button Margin="0, 10, 30, 0" x:Name="reactorButton" Background="White" FontSize="14" Height="32" Width="209" FontWeight="Bold" Content="Характеристики реакторов" Click="reactorButton_Click"/>
+                                <Button Margin="0, 10, 30, 0" x:Name="kineticsButton" Background="White" FontSize="14" Height="32" Width="209" FontWeight="Bold" Content="Кинетические параметры" Click="kineticsButton_Click"/>
                                 <Button Margin="0, 10, 0, 0" x:Name="chooseButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Выбрать вещество" Click="chooseButtonClick"/>
-                                <Button Margin="100, 10, 0, 0" x:Name="showTableButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Показать таблицу" Click="showTableButton_Click" IsEnabled="False"/>
+                                <Button Margin="30, 10, 0, 0" x:Name="showTableButton" Background="White" HorizontalAlignment="Center" FontSize="14" Height="32" Width="145" FontWeight="Bold" Content="Показать таблицу" Click="showTableButton_Click" IsEnabled="False"/>
                             </StackPanel>
 
-                            <StackPanel Margin="0, 22, 30, 0" Width="1088">
-                                <wpf:CartesianChart x:Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="1078"/>
+                            <StackPanel Margin="0, 22, 0, 0" Width="990">
+                                <wpf:CartesianChart x:Name="concChart" Series="{Binding SeriesCollectionConc}" LegendLocation="Right" Height="555" Width="990"/>
                             </StackPanel>
 
                             <StackPanel Margin="0, 25, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">

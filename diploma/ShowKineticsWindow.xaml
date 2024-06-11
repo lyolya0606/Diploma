@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Diploma"
         mc:Ignorable="d"
         FontFamily="{StaticResource Inter}"
-        Title="Кинетические параметры" Height="680" Width="1500"
+        Title="Кинетические параметры" Height="680" Width="1400"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" Closing="Window_Closing" Icon="/freony-390x240.png">
     <Window.Resources>
